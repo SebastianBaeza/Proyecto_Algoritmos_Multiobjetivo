@@ -120,6 +120,10 @@ typedef struct {
 // Población de vehículos
 extern truck vehiculos[MAX_VEHICLES];
 
+// extern double dist_cliente_anterior;
+extern int cliente_anterior;
+extern int separador;
+
 extern int nreal;
 extern int nbin;
 extern int nobj;
