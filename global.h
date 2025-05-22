@@ -14,17 +14,17 @@
 
 typedef struct
 {
-    int rank;
-    double constr_violation;
-    double *xreal;
-    int **gene;
-    double *xbin;
-    double *obj;
-    double *constr;
-    double crowd_dist;
+    int rank;                      // Rango de dominancia asignado (frente de Pareto al que pertenece)
+    double constr_violation;       // Suma de violaciones de restricciones (0 si es factible)
+    double *xreal;                 // Arreglo de variables reales del individuo
+    int **gene;                    // Matriz de genes (codificación binaria)
+    double *xbin;                  // Arreglo de variables binarias decodificadas
+    double *obj;                   // Arreglo de valores de las funciones objetivo
+    double *constr;                // Arreglo de valores de las restricciones
+    double crowd_dist;             // Distancia de crowding (diversidad en el frente de Pareto)
     // --- RCMDVRP representation ---
-    int *route; // arreglo de enteros: clientes y separadores negativos
-    int route_length;
+    int *route;                    // Arreglo que representa la ruta: clientes y separadores negativos
+    int route_length;              // Longitud de la ruta (número de elementos en route)
 }
 individual;
 

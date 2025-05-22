@@ -35,6 +35,7 @@ void initialize_ind (individual *ind)
     int capacidad = b; // o la capacidad correspondiente
     double riesgo_max = theta; // o el parámetro correspondiente
     int n_cli = n_customers;
+    int n_veh = 1;
 
     // Copiar clientes
     for (i = 0; i < n_cli; i++) clientes[i] = set_R[i];
@@ -49,23 +50,27 @@ void initialize_ind (individual *ind)
     cliente_anterior = 0; // o el valor inicial adecuado
     separador = -1;
     for (i = 0; i < n_cli; i++) {
-        int c = clientes[i];
-        int demanda = dm[c];
-        // double riesgo_cliente = sigma[c][0]; // o el cálculo adecuado
-        double riesgo_cliente = demanda * d[cliente_anterior][c];
-        if ((carga + demanda > capacidad) || (riesgo + riesgo_cliente > riesgo_max)) {
-            ind->route[pos++] = separador; // Separador de ruta
-            separador -= -1;
-            carga = 0;
-            riesgo = 0.0;
+        if (n_veh <= (n_vehicles * n_depots)){
+            int c = clientes[i];
+            int demanda = dm[c];
+            // double riesgo_cliente = sigma[c][0]; // o el cálculo adecuado
+            double riesgo_cliente = demanda * d[cliente_anterior][c];
+            if ((carga + demanda > capacidad) || (riesgo + riesgo_cliente > riesgo_max)) {
+                ind->route[pos++] = separador; // Separador de ruta
+                separador -= -1;
+                carga = 0;
+                riesgo = 0.0;
+                n_veh++;
+            }
+            ind->route[pos++] = c;
+            carga += demanda;
+            riesgo += riesgo_cliente;
+            cliente_anterior = c; // Actualizar cliente anterior
+        } else {
+            ind->constr[0] += dm[clientes[i]];
         }
-        ind->route[pos++] = c;
-        carga += demanda;
-        riesgo += riesgo_cliente;
-        cliente_anterior = c; // Actualizar cliente anterior
     }
     ind->route_length = pos;
-    // Rellenar el resto con -1 si se desea
-    for (; pos < MAX_NODES; pos++) ind->route[pos] = -1;
+    // for (; pos < MAX_NODES; pos++) ind->route[pos] = -1;
     return;
 }
