@@ -46,7 +46,7 @@ int main (int argc, char **argv)
     FILE *fpt4;
     FILE *fpt5;
 
-    struct problem_instance * pi;
+    struct problem_instance * pi = malloc (sizeof(problem_instance)) ;
     population *parent_pop;
     population *child_pop;
     population *mixed_pop;

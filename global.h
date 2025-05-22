@@ -9,6 +9,9 @@
 # define PI 3.14159265358979
 # define GNUPLOT_COMMAND "gnuplot -persist"
 
+#define MAX_NODES 100
+#define MAX_VEHICLES 10
+
 typedef struct
 {
     int rank;
@@ -19,6 +22,9 @@ typedef struct
     double *obj;
     double *constr;
     double crowd_dist;
+    // --- RCMDVRP representation ---
+    int *route; // arreglo de enteros: clientes y separadores negativos
+    int route_length;
 }
 individual;
 
@@ -39,23 +45,29 @@ list;
 typedef struct
 {
     int id;
+    int x, y;
+    int nVehicles;
     long int names[3];
+    // truck vehicleList[];
 }depot;
 
 typedef struct
 {
-    int id, name, demand;
-}client;
-
-typedef struct
-{
     int id, capacity;
+    int currentLoad;
+    int currentEmmission;
+    int currentDistance;
     int *dStart;
     int *dEnd;
     int *dIn;
     int ndStart, ndEnd, ndIn;
+    // client route[];
 }truck;
 
+typedef struct
+{
+    int id, name, demand, x, y;
+}client;
 
 typedef struct
 {
@@ -66,6 +78,47 @@ typedef struct
     truck *trucks;
     int nDepots, nClients, nTrucks;
 }problem_instance;
+
+// Parámetros generales de la instancia
+extern int n_nodes;      // Total de nodos (clientes + depósitos)
+extern int n_depots;     // Número de depósitos
+extern int n_customers;  // Número de clientes
+extern int n_vehicles;   // Número de vehículos
+
+// Conjuntos
+extern int set_O[MAX_NODES]; // Depósitos (orígenes)
+extern int set_R[MAX_NODES]; // Clientes
+extern int set_S[MAX_NODES]; // Depósitos (destinos)
+extern int set_K[MAX_VEHICLES]; // Vehículos
+
+// Parámetros de la instancia
+extern double sigma[MAX_NODES][2];
+extern int b;
+extern double theta;
+extern double peso_vacio;
+extern double alpha[5], beta[5], gamma[5], delta[5], epsilon[5], zeta[5], hta[5];
+
+// Demandas y matrices
+extern int dm[MAX_NODES]; // Demanda de cada nodo
+extern double d[MAX_NODES][MAX_NODES]; // Matriz de distancias
+extern int v[MAX_NODES][MAX_NODES];    // Matriz de velocidades
+
+// Parámetros adicionales
+extern int Rinit[MAX_NODES][MAX_VEHICLES];
+extern int f[MAX_NODES];
+
+// Estructura para un camión/vehículo
+typedef struct {
+    int id;
+    int ruta[MAX_NODES];    // Secuencia de nodos visitados por el vehículo
+    int tam_ruta;           // Tamaño de la ruta
+    double carga;           // Carga actual
+    double distancia;       // Distancia recorrida
+    // Puedes agregar más campos según necesidades del algoritmo
+} truck;
+
+// Población de vehículos
+extern truck vehiculos[MAX_VEHICLES];
 
 extern int nreal;
 extern int nbin;
