@@ -65,9 +65,9 @@ void real_mutate_ind (individual *ind)
     // Asegúrate de que la ruta tenga al menos dos clientes para intercambiar
     if (ind->route_length < 2) return;
 
-    // Probabilidad de mutación por swap
     for (int j = 0; j < nreal; j++)
     {
+        // Probabilidad de mutación por swap
         if (randomperc() <= pmut_real)
         {
             int pos1, pos2, temp;
