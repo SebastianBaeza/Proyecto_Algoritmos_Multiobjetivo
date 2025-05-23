@@ -7,6 +7,15 @@
 # include "global.h"
 # include "rand.h"
 
+
+int valueinarray(float val, float *arr, size_t n) {
+    for(size_t i = 0; i < n; i++) {
+        if(arr[i] == val)
+            return 1;
+    }
+    return 0;
+}
+
 /* Function to cross two individuals */
 void crossover (individual *parent1, individual *parent2, individual *child1, individual *child2)
 {
@@ -36,7 +45,13 @@ void realcross (individual *parent1, individual *parent2, individual *child1, in
         {
             if (randomperc()<=0.5 )
             {
-                
+                int indice = 0;
+                for (indice=0; indice<parent1->route_length; indice++)
+                {
+                    if (valueinarray(parent1->route[indice],child1->route, n_customers) == 1){
+                        break;
+                    }
+                }
             }
             else
             {
