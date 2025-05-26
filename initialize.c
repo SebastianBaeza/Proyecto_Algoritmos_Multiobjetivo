@@ -43,17 +43,16 @@ void initialize_ind (individual *ind)
     pos = 0;
     carga = 0;
     riesgo = 0.0;
-    cliente_anterior = 0; // o el valor inicial adecuado
+    cliente_anterior = 0;
     separador = -1;
     for (i = 0; i < n_cli; i++) {
         if (n_veh <= (n_vehicles * n_depots)){
             int c = clientes[i];
             int demanda = dm[c];
-            // double riesgo_cliente = sigma[c][0]; // o el cálculo adecuado
             double riesgo_cliente = demanda * d[cliente_anterior][c];
             if ((carga + demanda > capacidad) || (riesgo + riesgo_cliente > riesgo_max)) {
                 ind->route[pos++] = separador; // Separador de ruta
-                separador -= -1;
+                separador -= 1;
                 carga = 0;
                 riesgo = 0.0;
                 n_veh++;

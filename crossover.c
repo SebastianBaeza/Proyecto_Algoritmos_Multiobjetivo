@@ -41,30 +41,110 @@ void realcross (individual *parent1, individual *parent2, individual *child1, in
     if (randomperc() <= pcross_real)
     {
         nrealcross++;
+        individual *parent1_n;
+        individual *parent2_n;
+        individual *child1_n;
+        individual *child2_n;
+        parent1_n = (individual *)malloc(sizeof(individual));
+        parent2_n = (individual *)malloc(sizeof(individual));
+        child1_n = (individual *)malloc(sizeof(individual));
+        child2_n = (individual *)malloc(sizeof(individual));
+        int internal_counter1 = 0;
+        int internal_counter2 = 0;
+        for (i = 0; i < n_customers; i++) {
+            if (parent1->route[internal_counter1] >= 0) {
+                parent1_n->route[i] = parent1->route[internal_counter1];
+            }
+            if (parent2->route[internal_counter2] >= 0) {
+                parent2_n->route[i] = parent2->route[internal_counter2];
+            }
+            internal_counter1++;
+            internal_counter2++;
+            // if (internal_counter1 >= parent1->route_length) {
+            //     internal_counter1 = 0; // Reset to loop through parent1's route
+            // }
+            // if (internal_counter2 >= parent2->route_length) {
+            //     internal_counter2 = 0; // Reset to loop through parent2's route
+            // }
+        }
         for (i=0; i<nreal; i++)
         {
             if (randomperc()<=0.5 )
             {
                 int indice1 = 0;
                 int indice2 = 0;
-                for (int counter = 0; counter < (parent1->route_length); counter++)
+                for (int counter = 0; counter < (parent1_n->route_length); counter++)
                 {
-                    if (valueinarray(parent1->route[counter],child1->route, n_customers) == 1){
-                        child2->route[indice2] = parent1->route[counter];
+                    if (valueinarray(parent1_n->route[counter],child1_n->route, n_customers) == 1){
+                        child2_n->route[indice2] = parent1_n->route[counter];
                         indice2++;
                     } else {
-                        child1->route[indice1] = parent1->route[counter];
+                        child1_n->route[indice1] = parent1_n->route[counter];
                         indice1++;
                     }
 
-                    if (valueinarray(parent2->route[counter],child1->route, n_customers) == 1){
-                        child2->route[indice2] = parent2->route[counter];
+                    if (valueinarray(parent2_n->route[counter],child1_n->route, n_customers) == 1){
+                        child2_n->route[indice2] = parent2_n->route[counter];
                         indice2++;
                     } else {
-                        child1->route[indice1] = parent2->route[counter];
+                        child1_n->route[indice1] = parent2_n->route[counter];
                         indice1++;
                     }
                 }
+
+                int carga = 0;
+                double riesgo = 0.0;
+                int capacidad = b; 
+                double riesgo_max = theta;
+                int child_route_pos = 0;
+                child1->route_length = 0;
+                separador = -1;
+                int cliente_anterior = 0;
+                for (int i = 0; i < n_customers; i++) {
+                    int cliente = child1_n->route[i];
+                    int demanda = dm[cliente];
+
+                    // Si agregar este cliente excede la capacidad, inserta separador
+                    if (carga + demanda > capacidad || riesgo + demanda * d[cliente_anterior][cliente] > riesgo_max) {
+                        child1->route[child_route_pos++] = separador;
+                        separador -= 1; 
+                        child1->route_length++;
+                        carga = 0; 
+                        riesgo = 0.0; 
+                    }
+
+                    child1->route[child_route_pos++] = cliente;
+                    cliente_anterior = cliente; 
+                    riesgo += demanda * d[cliente_anterior][cliente];
+                    child1->route_length++;
+                    carga += demanda;
+                }
+                carga = 0;
+                riesgo = 0.0;
+                child_route_pos = 0;
+                child2->route_length = 0;
+                separador = -1;
+                cliente_anterior = 0;
+                for (int i = 0; i < n_customers; i++) {
+                    int cliente = child2_n->route[i];
+                    int demanda = dm[cliente];
+
+                    if (carga + demanda > capacidad || riesgo + demanda * d[cliente_anterior][cliente] > riesgo_max) {
+                        child2->route[child_route_pos++] = separador;
+                        separador -= 1;
+                        child2->route_length++;
+                        carga = 0;
+                        riesgo = 0.0;
+                    }
+
+                    child2->route[child_route_pos++] = cliente;
+                    cliente_anterior = cliente; 
+                    riesgo += demanda * d[cliente_anterior][cliente];
+                    child2->route_length++;
+                    carga += demanda;
+                }
+
+
             }
             else
             {
