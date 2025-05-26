@@ -45,11 +45,24 @@ void realcross (individual *parent1, individual *parent2, individual *child1, in
         {
             if (randomperc()<=0.5 )
             {
-                int indice = 0;
-                for (indice=0; indice<parent1->route_length; indice++)
+                int indice1 = 0;
+                int indice2 = 0;
+                for (int counter = 0; counter < (parent1->route_length); counter++)
                 {
-                    if (valueinarray(parent1->route[indice],child1->route, n_customers) == 1){
-                        break;
+                    if (valueinarray(parent1->route[counter],child1->route, n_customers) == 1){
+                        child2->route[indice2] = parent1->route[counter];
+                        indice2++;
+                    } else {
+                        child1->route[indice1] = parent1->route[counter];
+                        indice1++;
+                    }
+
+                    if (valueinarray(parent2->route[counter],child1->route, n_customers) == 1){
+                        child2->route[indice2] = parent2->route[counter];
+                        indice2++;
+                    } else {
+                        child1->route[indice1] = parent2->route[counter];
+                        indice1++;
                     }
                 }
             }
