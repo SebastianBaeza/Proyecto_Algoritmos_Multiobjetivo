@@ -87,6 +87,8 @@ void evaluate_ind(individual *ind)
 
     int prev_node = 0; // partimos desde el depósito 0
     int current_node;
+    int depot_counter = 0;
+    int current_depot = set_O[0]; // depósito actual
 
     for (int i = 0; i < ind->route_length; i++) {
         current_node = ind->route[i];
@@ -95,7 +97,7 @@ void evaluate_ind(individual *ind)
         if (current_node < 0) {
             // volver al depósito
             total_distance += d[prev_node][0];
-            total_emissions += compute_emission(prev_node, 0, current_capacity);
+            total_emissions += d[prev_node][0] * ((peso_vacio + current_capacity) + compute_emission(prev_node, current_depot));
             if (current_capacity > b) constr_viol += current_capacity - b;
             if (current_risk > theta) constr_viol += current_risk - theta;
 
@@ -104,12 +106,16 @@ void evaluate_ind(individual *ind)
             current_risk = 0.0;
             prev_node = 0;
             current_vehicle++;
+            if (current_vehicle >= n_vehicles) {
+                current_depot = set_O[++depot_counter]; // cambiar al siguiente depósito
+                current_vehicle = 0; // reiniciar contador de vehículos
+            }
         } else {
             // visitar cliente
             int demand = dm[current_node];
             double dist = d[prev_node][current_node];
             double speed_kmh = v[prev_node][current_node];
-            double emission = compute_emission(prev_node, current_node, current_capacity);
+            double emission = dist * ((peso_vacio + current_capacity) + compute_emission(prev_node, current_node));
 
             total_distance += dist;
             total_emissions += emission;
@@ -122,8 +128,8 @@ void evaluate_ind(individual *ind)
 
     // Cerrar la última ruta si no terminó en separador
     if (prev_node != 0) {
-        total_distance += d[prev_node][0];
-        total_emissions += compute_emission(prev_node, 0, current_capacity);
+        total_distance += d[prev_node][current_depot];
+        total_emissions += d[prev_node][current_depot] * ((peso_vacio + current_capacity) + compute_emission(prev_node, current_depot));
         if (current_capacity > b) constr_viol += current_capacity - b;
         if (current_risk > theta) constr_viol += current_risk - theta;
     }
@@ -137,19 +143,19 @@ void evaluate_ind(individual *ind)
 }
 
 
-double compute_emission(int i, int j, int carga)
+double compute_emission(int i, int j)
 {
     double s = (double)v[i][j]; // velocidad en km/h
-    double w = (double)(peso_vacio + carga); // peso total
 
     double f = 0.0;
-    for (int l = 0; l < 5; l++) {
-        f += (alpha[l] * pow(w, 4 - l)) +
-             (beta[l] * pow(s, 4 - l)) +
-             (gamma[l] * pow(w, 4 - l) * pow(s, l)) +
-             (delta[l] * pow(s, 4 - l) * pow(w, l)) +
-             (epsilon[l] * pow(s, 4 - l) * pow(w, l)) +
-             (zeta[l]) + (hta[l]);
+    for (int l = 1; l < 5; l++) {
+        // f += (alpha[l] * pow(w, 4 - l)) +
+        //      (beta[l] * pow(s, 4 - l)) +
+        //      (gamma[l] * pow(w, 4 - l) * pow(s, l)) +
+        //      (delta[l] * pow(s, 4 - l) * pow(w, l)) +
+        //      (epsilon[l] * pow(s, 4 - l) * pow(w, l)) +
+        //      (zeta[l]) + (hta[l]);
+        f += ((alpha[l] * pow(s, 2)) + (beta[l] * s) + (gamma[l]) + (delta[l] / s))/((epsilon[l] * pow(s, 2)) + (zeta[l] * s) + (hta[l]));
     }
     return f;
 }

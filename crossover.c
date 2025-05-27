@@ -152,6 +152,10 @@ void realcross (individual *parent1, individual *parent2, individual *child1, in
                 child2->xreal[i] = parent2->xreal[i];
             }
         }
+        free(parent1_n);
+        free(parent2_n);
+        free(child1_n);
+        free(child2_n);
     }
     else
     {
