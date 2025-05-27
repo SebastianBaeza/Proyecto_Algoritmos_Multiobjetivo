@@ -7,6 +7,26 @@
 # include "global.h"
 # include "rand.h"
 
+double compute_emission(int i, int j)
+{
+    double s = v[i][j];
+
+    double f = 0.0;
+    int l;
+    for (l = 1; l < 5; l++) {
+        /*
+        // f += (alpha[l] * pow(w, 4 - l)) +
+        //      (beta[l] * pow(s, 4 - l)) +
+        //      (gamma_param[l] * pow(w, 4 - l) * pow(s, l)) +
+        //      (delta[l] * pow(s, 4 - l) * pow(w, l)) +
+        //      (epsilon[l] * pow(s, 4 - l) * pow(w, l)) +
+        //      (zeta[l]) + (hta[l]);
+        */
+        f += ((alpha[l] * pow(s, 2)) + (beta[l] * s) + (gamma_param[l]) + (delta[l] / s))/((epsilon[l] * pow(s, 2)) + (zeta[l] * s) + (hta[l]));
+    }
+    return f;
+}
+
 /* Routine to evaluate objective function values and constraints for a population */
 void evaluate_pop (population *pop)
 {
@@ -90,7 +110,8 @@ void evaluate_ind(individual *ind)
     int depot_counter = 0;
     int current_depot = set_O[0]; 
 
-    for (int i = 0; i < ind->route_length; i++) {
+    int i;
+    for (i = 0; i < ind->route_length; i++) {
         current_node = ind->route[i];
 
         if (current_node < 0) {
@@ -111,7 +132,6 @@ void evaluate_ind(individual *ind)
         } else {
             int demand = dm[current_node];
             double dist = d[prev_node][current_node];
-            double speed_kmh = v[prev_node][current_node];
             double emission = dist * ((peso_vacio + current_capacity) + compute_emission(prev_node, current_node));
 
             total_distance += dist;
@@ -136,22 +156,3 @@ void evaluate_ind(individual *ind)
     ind->constr_violation = constr_viol;
 }
 
-
-double compute_emission(int i, int j)
-{
-    double s = (double)v[i][j];
-
-    double f = 0.0;
-    for (int l = 1; l < 5; l++) {
-        /*
-        // f += (alpha[l] * pow(w, 4 - l)) +
-        //      (beta[l] * pow(s, 4 - l)) +
-        //      (gamma[l] * pow(w, 4 - l) * pow(s, l)) +
-        //      (delta[l] * pow(s, 4 - l) * pow(w, l)) +
-        //      (epsilon[l] * pow(s, 4 - l) * pow(w, l)) +
-        //      (zeta[l]) + (hta[l]);
-        */
-        f += ((alpha[l] * pow(s, 2)) + (beta[l] * s) + (gamma[l]) + (delta[l] / s))/((epsilon[l] * pow(s, 2)) + (zeta[l] * s) + (hta[l]));
-    }
-    return f;
-}

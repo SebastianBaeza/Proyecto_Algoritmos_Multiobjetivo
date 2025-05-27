@@ -90,7 +90,7 @@ extern double sigma[MAX_NODES][2];
 extern int b;
 extern double theta;
 extern double peso_vacio;
-extern double alpha[5], beta[5], gamma[5], delta[5], epsilon[5], zeta[5], hta[5];
+extern double alpha[5], beta[5], gamma_param[5], delta[5], epsilon[5], zeta[5], hta[5];
 
 extern int dm[MAX_NODES];
 extern double d[MAX_NODES][MAX_NODES];

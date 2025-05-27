@@ -398,8 +398,8 @@ void read_dat_file(const char *filename) {
             for (i = 0; i < 5; i++) fscanf(f, "%*d %lf", &alpha[i]);
         } else if (strncmp(line, "param beta", 10) == 0) {
             for (i = 0; i < 5; i++) fscanf(f, "%*d %lf", &beta[i]);
-        } else if (strncmp(line, "param gamma", 11) == 0) {
-            for (i = 0; i < 5; i++) fscanf(f, "%*d %lf", &gamma[i]);
+        } else if (strncmp(line, "param gamma_param", 11) == 0) {
+            for (i = 0; i < 5; i++) fscanf(f, "%*d %lf", &gamma_param[i]);
         } else if (strncmp(line, "param delta", 11) == 0) {
             for (i = 0; i < 5; i++) fscanf(f, "%*d %lf", &delta[i]);
         } else if (strncmp(line, "param epsilon", 13) == 0) {

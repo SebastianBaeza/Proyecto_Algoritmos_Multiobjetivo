@@ -23,8 +23,10 @@ void initialize_pop (population *pop)
 /* Function to initialize an individual randomly */
 void initialize_ind (individual *ind)
 {
-    int clientes[MAX_NODES] = set_R;
-    int i, j, pos = 0;
+    int clientes[MAX_NODES];
+    int i;
+    int j = 0;
+    int pos = 0;
     int carga = 0;
     double riesgo = 0.0;
     int capacidad = b;
@@ -32,11 +34,15 @@ void initialize_ind (individual *ind)
     int n_cli = n_customers;
     int n_veh = 1;
 
-    for (i = 0; i < n_cli; i++) clientes[i] = set_R[i];
+    for (i = 0; i < n_cli; i++) {
+        clientes[i] = set_R[i];
+    }
 
     for (i = n_cli - 1; i > 0; i--) {
-        int j = rand() % (i + 1);
-        int tmp = clientes[i]; clientes[i] = clientes[j]; clientes[j] = tmp;
+        j = rand() % (i + 1);
+        int tmp = clientes[i]; 
+        clientes[i] = clientes[j]; 
+        clientes[j] = tmp;
     }
     pos = 0;
     carga = 0;

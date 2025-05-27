@@ -8,8 +8,9 @@
 # include "rand.h"
 
 
-int valueinarray(float val, float *arr, size_t n) {
-    for(size_t i = 0; i < n; i++) {
+int valueinarray(int val, int *arr, size_t n) {
+    size_t i;
+    for(i = 0; i < n; i++) {
         if(arr[i] == val)
             return 1;
     }
@@ -34,17 +35,17 @@ void crossover (individual *parent1, individual *parent2, individual *child1, in
 void realcross (individual *parent1, individual *parent2, individual *child1, individual *child2)
 {
     int i;
-    double rand;
+    individual *parent1_n;
+    individual *parent2_n;
+    individual *child1_n;
+    individual *child2_n;
+    /* double rand;
     double y1, y2, yl, yu;
     double c1, c2;
-    double alpha, beta, betaq;
+    double alpha, beta, betaq; */
     if (randomperc() <= pcross_real)
     {
         nrealcross++;
-        individual *parent1_n;
-        individual *parent2_n;
-        individual *child1_n;
-        individual *child2_n;
         parent1_n = (individual *)malloc(sizeof(individual));
         parent2_n = (individual *)malloc(sizeof(individual));
         child1_n = (individual *)malloc(sizeof(individual));
@@ -68,7 +69,8 @@ void realcross (individual *parent1, individual *parent2, individual *child1, in
             {
                 int indice1 = 0;
                 int indice2 = 0;
-                for (int counter = 0; counter < (parent1_n->route_length); counter++)
+                int counter;
+                for (counter = 0; counter < (parent1_n->route_length); counter++)
                 {
                     if (valueinarray(parent1_n->route[counter],child1_n->route, n_customers) == 1){
                         child2_n->route[indice2] = parent1_n->route[counter];
@@ -95,8 +97,9 @@ void realcross (individual *parent1, individual *parent2, individual *child1, in
                 child1->route_length = 0;
                 separador = -1;
                 int cliente_anterior = 0;
-                for (int i = 0; i < n_customers; i++) {
-                    int cliente = child1_n->route[i];
+                int j;
+                for (j = 0; j < n_customers; j++) {
+                    int cliente = child1_n->route[j];
                     int demanda = dm[cliente];
 
                     if (carga + demanda > capacidad || riesgo + demanda * d[cliente_anterior][cliente] > riesgo_max) {
@@ -119,8 +122,8 @@ void realcross (individual *parent1, individual *parent2, individual *child1, in
                 child2->route_length = 0;
                 separador = -1;
                 cliente_anterior = 0;
-                for (int i = 0; i < n_customers; i++) {
-                    int cliente = child2_n->route[i];
+                for (j = 0; j < n_customers; j++) {
+                    int cliente = child2_n->route[j];
                     int demanda = dm[cliente];
 
                     if (carga + demanda > capacidad || riesgo + demanda * d[cliente_anterior][cliente] > riesgo_max) {
