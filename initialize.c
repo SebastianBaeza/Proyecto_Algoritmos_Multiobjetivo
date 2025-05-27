@@ -24,7 +24,7 @@ void initialize_pop (population *pop)
 void initialize_ind (individual *ind)
 {
     // --- RCMDVRP: inicialización de rutas aleatorias con restricciones ---
-    int clientes[MAX_NODES];
+    int clientes[MAX_NODES] = set_R;
     int i, j, pos = 0;
     int carga = 0;
     double riesgo = 0.0;

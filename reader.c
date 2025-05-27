@@ -340,4 +340,66 @@ int readInputFile(char* filePath, problem_instance *pi) {
     return 0;
 }
 
+void read_dat_file(const char *filename) {
+    FILE *f = fopen(filename, "r");
+    if (!f) {
+        printf("Error al abrir archivo: %s\n", filename);
+        exit(1);
+    }
+
+    char line[512];
+    int i, j;
+
+    while (fgets(line, sizeof(line), f)) {
+        if (strncmp(line, "set O", 5) == 0) {
+            n_depots = 0;
+            while (fscanf(f, "%d", &i) == 1)
+                set_O[n_depots++] = i;
+        } else if (strncmp(line, "set R", 5) == 0) {
+            n_customers = 0;
+            while (fscanf(f, "%d", &i) == 1)
+                set_R[n_customers++] = i;
+        } else if (strncmp(line, "set K", 5) == 0) {
+            n_vehicles = 0;
+            while (fscanf(f, "%d", &i) == 1)
+                n_vehicles++;
+        } else if (strncmp(line, "param b", 7) == 0) {
+            fscanf(f, " := %d", &b);
+        } else if (strncmp(line, "param theta", 11) == 0) {
+            fscanf(f, " := %lf", &theta);
+        } else if (strncmp(line, "param peso_vacio", 17) == 0) {
+            fscanf(f, " := %d", &peso_vacio);
+        } else if (strncmp(line, "param dm", 8) == 0) {
+            while (fscanf(f, "%d %d", &i, &j) == 2)
+                dm[i] = j;
+        } else if (strncmp(line, "param d", 7) == 0) {
+            while (fscanf(f, "%d %d %lf", &i, &j, &theta) == 3)
+                d[i][j] = theta;
+        } else if (strncmp(line, "param v", 7) == 0) {
+            while (fscanf(f, "%d %d %lf", &i, &j, &theta) == 3)
+                v[i][j] = theta;
+        } else if (strncmp(line, "param alpha", 11) == 0) {
+            for (i = 0; i < 5; i++) fscanf(f, "%*d %lf", &alpha[i]);
+        } else if (strncmp(line, "param beta", 10) == 0) {
+            for (i = 0; i < 5; i++) fscanf(f, "%*d %lf", &beta[i]);
+        } else if (strncmp(line, "param gamma", 11) == 0) {
+            for (i = 0; i < 5; i++) fscanf(f, "%*d %lf", &gamma[i]);
+        } else if (strncmp(line, "param delta", 11) == 0) {
+            for (i = 0; i < 5; i++) fscanf(f, "%*d %lf", &delta[i]);
+        } else if (strncmp(line, "param epsilon", 13) == 0) {
+            for (i = 0; i < 5; i++) fscanf(f, "%*d %lf", &epsilon[i]);
+        } else if (strncmp(line, "param zeta", 10) == 0) {
+            for (i = 0; i < 5; i++) fscanf(f, "%*d %lf", &zeta[i]);
+        } else if (strncmp(line, "param hta", 9) == 0 || strncmp(line, "param hta", 9) == 0) {
+            for (i = 0; i < 5; i++) fscanf(f, "%*d %lf", &hta[i]);
+        }
+    }
+
+    fclose(f);
+
+    // Derivar número de nodos totales
+    n_nodes = n_customers + n_depots;
+    printf("Instancia cargada: %d depósitos, %d clientes, %d vehículos.\n", n_depots, n_customers, n_vehicles);
+}
+
 
