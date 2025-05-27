@@ -14,17 +14,16 @@
 
 typedef struct
 {
-    int rank;                      // Rango de dominancia asignado (frente de Pareto al que pertenece)
-    double constr_violation;       // Suma de violaciones de restricciones (0 si es factible)
-    double *xreal;                 // Arreglo de variables reales del individuo
-    int **gene;                    // Matriz de genes (codificación binaria)
-    double *xbin;                  // Arreglo de variables binarias decodificadas
-    double *obj;                   // Arreglo de valores de las funciones objetivo
-    double *constr;                // Arreglo de valores de las restricciones
-    double crowd_dist;             // Distancia de crowding (diversidad en el frente de Pareto)
-    // --- RCMDVRP representation ---
-    int *route;                    // Arreglo que representa la ruta: clientes y separadores negativos
-    int route_length;              // Longitud de la ruta (número de elementos en route)
+    int rank;                       
+    double constr_violation;        
+    double *xreal;                  
+    int **gene;                     
+    double *xbin;                   
+    double *obj;                    
+    double *constr;                 
+    double crowd_dist;              
+    int *route;                     
+    int route_length;               
 }
 individual;
 
@@ -48,7 +47,6 @@ typedef struct
     int x, y;
     int nVehicles;
     long int names[3];
-    // truck vehicleList[];
 }depot;
 
 typedef struct
@@ -61,7 +59,6 @@ typedef struct
     int *dEnd;
     int *dIn;
     int ndStart, ndEnd, ndIn;
-    // client route[];
 }truck;
 
 typedef struct
@@ -79,48 +76,31 @@ typedef struct
     int nDepots, nClients, nTrucks;
 }problem_instance;
 
-// Parámetros generales de la instancia
-extern int n_nodes;      // Total de nodos (clientes + depósitos)
-extern int n_depots;     // Número de depósitos
-extern int n_customers;  // Número de clientes
-extern int n_vehicles;   // Número de vehículos
+extern int n_nodes;      
+extern int n_depots;     
+extern int n_customers;  
+extern int n_vehicles;   
 
-// Conjuntos
-extern int set_O[MAX_NODES]; // Depósitos (orígenes)
-extern int set_R[MAX_NODES]; // Clientes
-extern int set_S[MAX_NODES]; // Depósitos (destinos)
-extern int set_K[MAX_VEHICLES]; // Vehículos
+extern int set_O[MAX_NODES]; 
+extern int set_R[MAX_NODES];
+extern int set_S[MAX_NODES];
+extern int set_K[MAX_VEHICLES];
 
-// Parámetros de la instancia
 extern double sigma[MAX_NODES][2];
 extern int b;
 extern double theta;
 extern double peso_vacio;
 extern double alpha[5], beta[5], gamma[5], delta[5], epsilon[5], zeta[5], hta[5];
 
-// Demandas y matrices
-extern int dm[MAX_NODES]; // Demanda de cada nodo
-extern double d[MAX_NODES][MAX_NODES]; // Matriz de distancias
-extern int v[MAX_NODES][MAX_NODES];    // Matriz de velocidades
+extern int dm[MAX_NODES];
+extern double d[MAX_NODES][MAX_NODES];
+extern int v[MAX_NODES][MAX_NODES]; 
 
-// Parámetros adicionales
 extern int Rinit[MAX_NODES][MAX_VEHICLES];
 extern int f[MAX_NODES];
 
-// Estructura para un camión/vehículo
-typedef struct {
-    int id;
-    int ruta[MAX_NODES];    // Secuencia de nodos visitados por el vehículo
-    int tam_ruta;           // Tamaño de la ruta
-    double carga;           // Carga actual
-    double distancia;       // Distancia recorrida
-    // Puedes agregar más campos según necesidades del algoritmo
-} truck;
-
-// Población de vehículos
 extern truck vehiculos[MAX_VEHICLES];
 
-// extern double dist_cliente_anterior;
 extern int cliente_anterior;
 extern int separador;
 

@@ -41,7 +41,7 @@ void allocate_memory_ind (individual *ind)
     {
         ind->constr = (double *)malloc(ncon*sizeof(double));
     }
-    // RCMDVRP: allocate route
+
     ind->route = (int *)malloc(MAX_NODES * sizeof(int));
     ind->route_length = 0;
     return;
@@ -81,7 +81,7 @@ void deallocate_memory_ind (individual *ind)
     {
         free(ind->constr);
     }
-    // RCMDVRP: free route
+
     free(ind->route);
     return;
 }

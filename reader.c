@@ -277,68 +277,69 @@ void readTrucksDepots(FILE *f, problem_instance *pi, char * type) {
     }
 }
 
+/*
+int readInputFile(char* filePath, problem_instance *pi) {
+    int debug=0;
+    FILE* fh=fopen(filePath, "r");
 
-// int readInputFile(char* filePath, problem_instance *pi) {
-//     int debug=0;
-//     FILE* fh=fopen(filePath, "r");
+    if ( fh==NULL ){
+        printf("File does not exists %s", filePath);
+        return 0;
+    }
 
-//     /*check if file exists*/
-//     if ( fh==NULL ){
-//         printf("File does not exists %s", filePath);
-//         return 0;
-//     }
-
-//     if(debug) printf("Reading: %s \n", filePath);
+    if(debug) printf("Reading: %s \n", filePath);
     
-//     findDef(fh, "D_start:=");
-//     readDepots(fh, pi);
-//     if(debug) printf("End readDepots! \n");
+    findDef(fh, "D_start:=");
+    readDepots(fh, pi);
+    if(debug) printf("End readDepots! \n");
 
-//     findDef(fh, "C:=");
-//     readClients(fh, pi);
-//     if(debug) printf("End readClients! \n");
+    findDef(fh, "C:=");
+    readClients(fh, pi);
+    if(debug) printf("End readClients! \n");
 
-//     findDef(fh, "D_in:=");
-//     readAlternativeNames(fh, pi, 1);
+    findDef(fh, "D_in:=");
+    readAlternativeNames(fh, pi, 1);
 
-//     findDef(fh, "D_end:=");
-//     readAlternativeNames(fh, pi, 2);
-//     if(debug) printf("End readNames! \n");
+    findDef(fh, "D_end:=");
+    readAlternativeNames(fh, pi, 2);
+    if(debug) printf("End readNames! \n");
     
-//     findDef(fh, "K:=");
-//     readTrucks(fh, pi);
-//     if(debug) printf("End readTrucks! \n ");
+    findDef(fh, "K:=");
+    readTrucks(fh, pi);
+    if(debug) printf("End readTrucks! \n ");
 
-//     findDef(fh, "time_:=");
-//     readDistances(fh, pi);
-//     if(debug) printf("End readDistances!\n ");
+    findDef(fh, "time_:=");
+    readDistances(fh, pi);
+    if(debug) printf("End readDistances!\n ");
 
-//     findDef(fh, "dem:=");
-//     readDemands(fh, pi);
-//     if(debug) printf("End readDemands! \n");
+    findDef(fh, "dem:=");
+    readDemands(fh, pi);
+    if(debug) printf("End readDemands! \n");
 
-//     findDef(fh, "cap:=");
-//     readCTrucks(fh, pi);
-//     if(debug) printf("End readCTrucks! \n");
+    findDef(fh, "cap:=");
+    readCTrucks(fh, pi);
+    if(debug) printf("End readCTrucks! \n");
 
-//     findDef(fh, "ava_start:=");
-//     readTrucksDepots(fh, pi, "start");
+    findDef(fh, "ava_start:=");
+    readTrucksDepots(fh, pi, "start");
     
-//     findDef(fh, "ava_end:=");
-//     readTrucksDepots(fh, pi, "end");
+    findDef(fh, "ava_end:=");
+    readTrucksDepots(fh, pi, "end");
 
-//     findDef(fh, "com:=");
-//     readTrucksDepots(fh, pi, "in");
-//     if(debug) printf("End readTrucksDepots! \n");
+    findDef(fh, "com:=");
+    readTrucksDepots(fh, pi, "in");
+    if(debug) printf("End readTrucksDepots! \n");
 
-//     fclose(fh);
-//     if(debug) printf("End Reading! \n");
+    fclose(fh);
+    if(debug) printf("End Reading! \n");
     
-//     printProblemInstance(pi);
-//     if(debug) getchar();
+    printProblemInstance(pi);
+    if(debug) getchar();
 
-//     return 0;
-// }
+    return 0;
+}
+*/
+
 
 int readInputFile(char* filePath, problem_instance *pi) {
     int debug=0;
@@ -412,7 +413,6 @@ void read_dat_file(const char *filename) {
 
     fclose(f);
 
-    // Derivar número de nodos totales
     n_nodes = n_customers + n_depots;
     printf("Instancia cargada: %d depósitos, %d clientes, %d vehículos.\n", n_depots, n_customers, n_vehicles);
 }
