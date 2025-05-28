@@ -7,6 +7,28 @@
 # include "global.h"
 # include "rand.h"
 
+
+void save_pareto_front_formatted(population *pop, int popsize, const char *filename) {
+    FILE *fp = fopen(filename, "w");
+    if (!fp) {
+        printf("No se pudo abrir el archivo de salida.\n");
+        return;
+    }
+
+    fprintf(fp, "#\n"); // Primera línea
+
+    for (int i = 0; i < popsize; i++) {
+        individual *ind = &(pop->ind[i]);
+        // Guarda solo los individuos del frente de Pareto (rank == 1)
+        if (ind->rank == 1) {
+            fprintf(fp, "%lf %lf\n", ind->obj[0], ind->obj[1]);
+        }
+    }
+
+    fprintf(fp, "#\n"); // Última línea
+    fclose(fp);
+}
+
 /* Function to print the information of a population in a file */
 void report_pop (population *pop, FILE *fpt)
 {
