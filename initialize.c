@@ -31,25 +31,23 @@ void initialize_ind (individual *ind)
     double riesgo = 0.0;
     int capacidad = b;
     double riesgo_max = theta;
-    int n_cli = n_customers;
     int n_veh = 1;
 
-    for (i = 0; i < n_cli; i++) {
+    int cliente_anterior = 0;
+    int separador = -1;
+
+    for (i = 0; i < n_customers; i++) {
         clientes[i] = set_R[i];
     }
 
-    for (i = n_cli - 1; i > 0; i--) {
+    for (i = n_customers - 1; i > 0; i--) {
         j = rand() % (i + 1);
         int tmp = clientes[i]; 
         clientes[i] = clientes[j]; 
         clientes[j] = tmp;
     }
-    pos = 0;
-    carga = 0;
-    riesgo = 0.0;
-    cliente_anterior = 0;
-    separador = -1;
-    for (i = 0; i < n_cli; i++) {
+
+    for (i = 0; i < n_customers; i++) {
         if (n_veh <= (n_vehicles * n_depots)){
             int c = clientes[i];
             int demanda = dm[c];

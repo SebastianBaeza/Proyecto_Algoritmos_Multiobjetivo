@@ -98,7 +98,7 @@ extern int dm[MAX_NODES];
 extern double d[MAX_NODES][MAX_NODES];
 extern int v[MAX_NODES][MAX_NODES]; 
 
-extern int Rinit[MAX_NODES][MAX_VEHICLES];
+/* extern int Rinit[MAX_NODES][MAX_VEHICLES]; */
 extern int f[MAX_NODES];
 
 extern int cliente_anterior;
