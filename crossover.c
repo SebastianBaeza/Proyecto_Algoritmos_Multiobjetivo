@@ -43,6 +43,8 @@ void realcross (individual *parent1, individual *parent2, individual *child1, in
     int indice1 = 0;
     int indice2 = 0;
     int counter;
+    int internal_counter1 = 0;
+    int internal_counter2 = 0;
     
     int carga = 0;
     double riesgo = 0.0;
@@ -50,8 +52,11 @@ void realcross (individual *parent1, individual *parent2, individual *child1, in
     double riesgo_max = theta;
     int child_route_pos = 0;
     separador = -1;
-    int cliente;
+    /*int cliente = 0; */
     int cliente_anterior = 0;
+    
+    int demanda;
+    int j;
     /* double rand;
     double y1, y2, yl, yu;
     double c1, c2;
@@ -63,8 +68,6 @@ void realcross (individual *parent1, individual *parent2, individual *child1, in
         parent2_n = (individual *)malloc(sizeof(individual));
         child1_n = (individual *)malloc(sizeof(individual));
         child2_n = (individual *)malloc(sizeof(individual));
-        int internal_counter1 = 0;
-        int internal_counter2 = 0;
         for (i = 0; i < n_customers; i++) {
             if (parent1->route[internal_counter1] >= 0) {
                 parent1_n->route[i] = parent1->route[internal_counter1];
@@ -99,9 +102,7 @@ void realcross (individual *parent1, individual *parent2, individual *child1, in
                     }
                 }
 
-                int demanda;
                 child1->route_length = 0;
-                int j;
                 for (j = 0; j < n_customers; j++) {
                     cliente = child1_n->route[j];
                     demanda = dm[cliente];

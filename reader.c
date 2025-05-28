@@ -349,7 +349,7 @@ void read_dat_file(const char *filename) {
         exit(1);
     }
     
-    char line[512];
+    char line[512] = "";
     int i, j;
     double val;
     
@@ -457,7 +457,7 @@ void read_dat_file(const char *filename) {
 }
 
 
-int readInputFile(char* filePath, problem_instance *pi) {
+int readInputFile(char* filePath) {
     int debug=0;
     FILE* fh=fopen(filePath, "r");
 

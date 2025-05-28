@@ -62,9 +62,8 @@ void bin_mutate_ind (individual *ind)
 /* Routine for swap mutation of an individual's route (for RCMDVRP) */
 void real_mutate_ind (individual *ind)
 {
-    if (ind->route_length < 2) return;
-
     int j;
+    if (ind->route_length < 2) return;
 
     for (j = 0; j < nreal; j++)
     {

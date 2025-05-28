@@ -101,6 +101,7 @@ extern int v[MAX_NODES][MAX_NODES];
 /* extern int Rinit[MAX_NODES][MAX_VEHICLES]; */
 extern int f[MAX_NODES];
 
+extern int cliente;
 extern int cliente_anterior;
 extern int separador;
 
@@ -132,6 +133,11 @@ extern int obj2;
 extern int obj3;
 extern int angle1;
 extern int angle2;
+
+/*
+char * instance_route;
+char * line[512];
+*/
 
 void allocate_memory_pop (population *pop, int size);
 void allocate_memory_ind (individual *ind);
@@ -191,5 +197,7 @@ void q_sort_dist(population *pop, int *dist, int left, int right);
 
 void selection (population *old_pop, population *new_pop);
 individual* tournament (individual *ind1, individual *ind2);
+
+/* int readInputFile(char *file_path); */
 
 # endif

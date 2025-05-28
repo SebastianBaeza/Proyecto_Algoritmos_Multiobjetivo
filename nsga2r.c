@@ -56,6 +56,7 @@ int dm[MAX_NODES];
 double d[MAX_NODES][MAX_NODES];
 int v[MAX_NODES][MAX_NODES];
 int f[MAX_NODES];
+int cliente = 0;
 int cliente_anterior = 0;
 int separador = 0;
 /*
@@ -98,7 +99,7 @@ int main (int argc, char **argv)
     FILE *fpt4;
     FILE *fpt5;
 
-    struct problem_instance * pi = malloc (sizeof(problem_instance)) ;
+    /* struct problem_instance * pi = malloc (sizeof(problem_instance)) ; */
     population *parent_pop;
     population *child_pop;
     population *mixed_pop;
@@ -124,7 +125,8 @@ int main (int argc, char **argv)
     fprintf(fpt5,"# This file contains information about inputs as read by the program\n");
 
     char * instance_route = argv[2];
-    readInputFile(instance_route, pi);
+    /* readInputFile(instance_route, pi); */
+    readInputFile(instance_route);
 
     popsize = atoi(argv[3]);
     if (popsize<4 || (popsize%4)!= 0){
