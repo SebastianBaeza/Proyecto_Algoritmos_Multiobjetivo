@@ -35,6 +35,7 @@ int countWords(char *line){
    return words;
 }
 
+/*
 void readCTrucks(FILE *f, problem_instance *pi) {
     int debug=0, capacity, id;
 
@@ -69,7 +70,7 @@ void readDepots(FILE *f, problem_instance *pi) {
     while( token != NULL ) {
         if (debug) printf("%s\n", token);
         pi->depots[id].id=id;
-        pi->depots[id].names[0] = atoi(token); /*primer nombre*/
+        pi->depots[id].names[0] = atoi(token); 
         token=strtok(NULL, " ");
         id++;
     }
@@ -170,7 +171,7 @@ void readTrucks(FILE *f, problem_instance *pi) {
         }
 
         if (debug) printf("###################################\n");
-        /*if (debug) printf("%s\n", token);*/
+        /*if (debug) printf("%s\n", token);*/ /*
         token = strtok(NULL, " ");
         id++;
     }
@@ -277,7 +278,7 @@ void readTrucksDepots(FILE *f, problem_instance *pi, char * type) {
     }
 }
 
-/*
+
 int readInputFile(char* filePath, problem_instance *pi) {
     int debug=0;
     FILE* fh=fopen(filePath, "r");
@@ -366,6 +367,28 @@ void read_dat_file(const char *filename) {
     char line[512];
     int i, j;
 
+    int n_nodes;      
+    int n_depots;     
+    int n_customers;  
+    int n_vehicles;   
+    int set_O[MAX_NODES]; 
+    int set_R[MAX_NODES];
+    int set_S[MAX_NODES];
+    int set_K[MAX_VEHICLES];
+    int demanda;
+    double sigma[11][2];
+    int b;
+    double theta;
+    double peso_vacio;
+    double alpha[5], beta[5], gamma_param[5], delta_param[5], epsilon[5], zeta[5], hta[5];
+    int dm[MAX_NODES];
+    double d[MAX_NODES][MAX_NODES];
+    int v[MAX_NODES][MAX_NODES]; 
+    int Rinit[MAX_NODES][MAX_VEHICLES];
+    int f[MAX_NODES];
+    int cliente_anterior;
+    int separador;
+
     while (fgets(line, sizeof(line), f)) {
         if (strncmp(line, "set O", 5) == 0) {
             n_depots = 0;
@@ -384,7 +407,7 @@ void read_dat_file(const char *filename) {
         } else if (strncmp(line, "param theta", 11) == 0) {
             fscanf(f, " := %lf", &theta);
         } else if (strncmp(line, "param peso_vacio", 17) == 0) {
-            fscanf(f, " := %d", &peso_vacio);
+            fscanf(f, " := %lf", &peso_vacio);
         } else if (strncmp(line, "param dm", 8) == 0) {
             while (fscanf(f, "%d %d", &i, &j) == 2)
                 dm[i] = j;
@@ -401,7 +424,7 @@ void read_dat_file(const char *filename) {
         } else if (strncmp(line, "param gamma_param", 11) == 0) {
             for (i = 0; i < 5; i++) fscanf(f, "%*d %lf", &gamma_param[i]);
         } else if (strncmp(line, "param delta", 11) == 0) {
-            for (i = 0; i < 5; i++) fscanf(f, "%*d %lf", &delta[i]);
+            for (i = 0; i < 5; i++) fscanf(f, "%*d %lf", &delta_param[i]);
         } else if (strncmp(line, "param epsilon", 13) == 0) {
             for (i = 0; i < 5; i++) fscanf(f, "%*d %lf", &epsilon[i]);
         } else if (strncmp(line, "param zeta", 10) == 0) {

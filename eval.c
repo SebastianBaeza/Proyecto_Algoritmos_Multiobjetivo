@@ -18,11 +18,11 @@ double compute_emission(int i, int j)
         // f += (alpha[l] * pow(w, 4 - l)) +
         //      (beta[l] * pow(s, 4 - l)) +
         //      (gamma_param[l] * pow(w, 4 - l) * pow(s, l)) +
-        //      (delta[l] * pow(s, 4 - l) * pow(w, l)) +
+        //      (delta_param[l] * pow(s, 4 - l) * pow(w, l)) +
         //      (epsilon[l] * pow(s, 4 - l) * pow(w, l)) +
         //      (zeta[l]) + (hta[l]);
         */
-        f += ((alpha[l] * pow(s, 2)) + (beta[l] * s) + (gamma_param[l]) + (delta[l] / s))/((epsilon[l] * pow(s, 2)) + (zeta[l] * s) + (hta[l]));
+        f += ((alpha[l] * pow(s, 2)) + (beta[l] * s) + (gamma_param[l]) + (delta_param[l] / s))/((epsilon[l] * pow(s, 2)) + (zeta[l] * s) + (hta[l]));
     }
     return f;
 }
@@ -104,6 +104,9 @@ void evaluate_ind(individual *ind)
     int current_vehicle = 0;
     int current_capacity = 0;
     double current_risk = 0.0;
+    
+    double dist;
+    double emission;
 
     int prev_node = 0;
     int current_node;
@@ -130,14 +133,14 @@ void evaluate_ind(individual *ind)
                 current_vehicle = 0;
             }
         } else {
-            int demand = dm[current_node];
-            double dist = d[prev_node][current_node];
-            double emission = dist * ((peso_vacio + current_capacity) + compute_emission(prev_node, current_node));
+            demanda = dm[current_node];
+            dist = d[prev_node][current_node];
+            emission = dist * ((peso_vacio + current_capacity) + compute_emission(prev_node, current_node));
 
             total_distance += dist;
             total_emissions += emission;
-            current_capacity += demand;
-            current_risk += dist * demand;
+            current_capacity += demanda;
+            current_risk += dist * demanda;
 
             prev_node = current_node;
         }

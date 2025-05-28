@@ -86,11 +86,13 @@ extern int set_R[MAX_NODES];
 extern int set_S[MAX_NODES];
 extern int set_K[MAX_VEHICLES];
 
-extern double sigma[MAX_NODES][2];
+extern int demanda;
+
+extern double sigma[11][2];
 extern int b;
 extern double theta;
 extern double peso_vacio;
-extern double alpha[5], beta[5], gamma_param[5], delta[5], epsilon[5], zeta[5], hta[5];
+extern double alpha[5], beta[5], gamma_param[5], delta_param[5], epsilon[5], zeta[5], hta[5];
 
 extern int dm[MAX_NODES];
 extern double d[MAX_NODES][MAX_NODES];
@@ -98,8 +100,6 @@ extern int v[MAX_NODES][MAX_NODES];
 
 extern int Rinit[MAX_NODES][MAX_VEHICLES];
 extern int f[MAX_NODES];
-
-extern truck vehiculos[MAX_VEHICLES];
 
 extern int cliente_anterior;
 extern int separador;

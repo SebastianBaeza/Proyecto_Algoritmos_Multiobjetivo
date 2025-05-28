@@ -39,6 +39,19 @@ void realcross (individual *parent1, individual *parent2, individual *child1, in
     individual *parent2_n;
     individual *child1_n;
     individual *child2_n;
+    
+    int indice1 = 0;
+    int indice2 = 0;
+    int counter;
+    
+    int carga = 0;
+    double riesgo = 0.0;
+    int capacidad = b; 
+    double riesgo_max = theta;
+    int child_route_pos = 0;
+    separador = -1;
+    int cliente;
+    int cliente_anterior = 0;
     /* double rand;
     double y1, y2, yl, yu;
     double c1, c2;
@@ -67,9 +80,6 @@ void realcross (individual *parent1, individual *parent2, individual *child1, in
         {
             if (randomperc()<=0.5 )
             {
-                int indice1 = 0;
-                int indice2 = 0;
-                int counter;
                 for (counter = 0; counter < (parent1_n->route_length); counter++)
                 {
                     if (valueinarray(parent1_n->route[counter],child1_n->route, n_customers) == 1){
@@ -89,18 +99,12 @@ void realcross (individual *parent1, individual *parent2, individual *child1, in
                     }
                 }
 
-                int carga = 0;
-                double riesgo = 0.0;
-                int capacidad = b; 
-                double riesgo_max = theta;
-                int child_route_pos = 0;
+                int demanda;
                 child1->route_length = 0;
-                separador = -1;
-                int cliente_anterior = 0;
                 int j;
                 for (j = 0; j < n_customers; j++) {
-                    int cliente = child1_n->route[j];
-                    int demanda = dm[cliente];
+                    cliente = child1_n->route[j];
+                    demanda = dm[cliente];
 
                     if (carga + demanda > capacidad || riesgo + demanda * d[cliente_anterior][cliente] > riesgo_max) {
                         child1->route[child_route_pos++] = separador;
@@ -123,8 +127,8 @@ void realcross (individual *parent1, individual *parent2, individual *child1, in
                 separador = -1;
                 cliente_anterior = 0;
                 for (j = 0; j < n_customers; j++) {
-                    int cliente = child2_n->route[j];
-                    int demanda = dm[cliente];
+                    cliente = child2_n->route[j];
+                    demanda = dm[cliente];
 
                     if (carga + demanda > capacidad || riesgo + demanda * d[cliente_anterior][cliente] > riesgo_max) {
                         child2->route[child_route_pos++] = separador;
