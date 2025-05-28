@@ -291,7 +291,6 @@ int main (int argc, char **argv)
         fprintf(fpt5,"\n Number of crossover of binary variable = %d",nbincross);
         fprintf(fpt5,"\n Number of mutation of binary variable = %d",nbinmut);
     }
-    save_pareto_front_formatted(&parent_pop, popsize, "pareto_front.txt");
     fflush(stdout);
     fflush(fpt1);
     fflush(fpt2);
