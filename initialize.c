@@ -12,6 +12,7 @@
 /* Function to initialize a population randomly */
 void initialize_pop (population *pop)
 {
+    /* printf("\n Initializing population \n"); */
     int i;
     for (i=0; i<popsize; i++)
     {
@@ -23,6 +24,7 @@ void initialize_pop (population *pop)
 /* Function to initialize an individual randomly */
 void initialize_ind (individual *ind)
 {
+    /* printf("\n Initializing individual \n"); */
     int clientes[MAX_NODES];
     int i;
     int j = 0;
@@ -40,13 +42,18 @@ void initialize_ind (individual *ind)
 
     for (i = 0; i < n_customers; i++) {
         clientes[i] = set_R[i];
+       /*  printf("Set R[%d]: %d\n", i, set_R[i]);
+        printf("Cliente %d: %d\n", i, clientes[i]); */
     }
+/*     printf("\n Shuffling customers\n"); */
+/*     printf("\n ------ \n"); */
 
     for (i = n_customers - 1; i > 0; i--) {
         j = rand() % (i + 1);
         tmp = clientes[i]; 
         clientes[i] = clientes[j]; 
         clientes[j] = tmp;
+        /* printf("Cliente %d: %d\n", i, clientes[i]); */
     }
 
     for (i = 0; i < n_customers; i++) {
@@ -70,5 +77,11 @@ void initialize_ind (individual *ind)
         }
     }
     ind->route_length = pos;
+/*     printf("\n Individual initialized with %d nodes in route\n", ind->route_length);
+    printf("\n Individual route: ");
+    for (i = 0; i < ind->route_length; i++) {
+        printf("%d ", ind->route[i]);
+    }
+    printf("\n"); */
     return;
 }

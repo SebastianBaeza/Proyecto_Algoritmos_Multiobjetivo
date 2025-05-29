@@ -348,108 +348,202 @@ void read_dat_file(const char *filename) {
         printf("Error al abrir archivo: %s\n", filename);
         exit(1);
     }
-    
-    char line[512] = "";
-    int i, j;
-    double val;
-    
-    /* 
-    int n_nodes;      
-    int n_depots;     
-    int n_customers;  
-    int n_vehicles;   
-    int set_O[MAX_NODES]; 
-    int set_R[MAX_NODES];
-    int set_S[MAX_NODES];
-    int set_K[MAX_VEHICLES];
-    int demanda;
-    double sigma[11][2];
-    int b;
-    double theta;
-    double peso_vacio;
-    double alpha[5], beta[5], gamma_param[5], delta_param[5], epsilon[5], zeta[5], hta[5];
-    int dm[MAX_NODES];
-    double d[MAX_NODES][MAX_NODES];
-    int v[MAX_NODES][MAX_NODES]; 
-    int Rinit[MAX_NODES][MAX_VEHICLES]; 
-    int f[MAX_NODES];
-    int cliente_anterior;
-    int separador;
-    */
-    
+    printf("Reading file: %s\n", filename);
+
+    char line[512];
+    int i, j, idx;
+    double val; 
+    char *p;
+
     while (fgets(line, sizeof(line), file)) {
-        if (strncmp(line, "set O", 5) == 0) {
-            n_depots = 0;
-            while (fscanf(file, "%d", &i) == 1)
-                set_O[n_depots++] = i;
+        if (strncmp(line, "param sigma", 11) == 0) {
+            for (i = 0; i < 11; i++) {
+                fgets(line, sizeof(line), file);
+                if (strchr(line, ';')) break;
+                sscanf(line, "%d %lf %lf", &idx, &sigma[i][0], &sigma[i][1]);
+         /*        printf("sigma[0][0]: %lf, sigma[0][1]: %lf\n", sigma[0][0], sigma[0][1]); */
+            }
         }
+
+        else if (strncmp(line, "set O", 5) == 0) {
+            n_depots = 0;
+            char *p = strstr(line, ":=");
+            if (!p) continue;
+            p += 2;
+            char *end = strchr(p, ';');
+            if (end) *end = '\0';
+            char *token = strtok(p, " \t\n\r");
+            while (token) {
+                set_O[n_depots++] = atoi(token);
+                token = strtok(NULL, " \t\n\r");
+            }
+        }
+
         else if (strncmp(line, "set R", 5) == 0) {
             n_customers = 0;
-            while (fscanf(file, "%d", &i) == 1)
-                set_R[n_customers++] = i;
+            char *p = strstr(line, ":=");
+            if (!p) continue;
+            p += 2;
+            char *end = strchr(p, ';');
+            if (end) *end = '\0';
+            char *token = strtok(p, " \t\n\r");
+            while (token) {
+                set_R[n_customers++] = atoi(token);
+                token = strtok(NULL, " \t\n\r");
+            }
         }
+
+        else if (strncmp(line, "set S", 5) == 0) {
+            int n = 0;
+            char *p = strstr(line, ":=");
+            if (!p) continue;
+            p += 2;
+            char *end = strchr(p, ';');
+            if (end) *end = '\0';
+            char *token = strtok(p, " \t\n\r");
+            while (token) {
+                set_S[n++] = atoi(token);
+                token = strtok(NULL, " \t\n\r");
+            }
+        }
+
         else if (strncmp(line, "set K", 5) == 0) {
             n_vehicles = 0;
-            while (fscanf(file, "%d", &i) == 1)
-            set_K[n_vehicles++] = i;
+            char *p = strstr(line, ":=");
+            if (!p) continue;
+            p += 2;
+            char *end = strchr(p, ';');
+            if (end) *end = '\0';
+            char *token = strtok(p, " \t\n\r");
+            while (token) {
+                set_K[n_vehicles++] = atoi(token);
+                token = strtok(NULL, " \t\n\r");
+            }
         }
+
         else if (strncmp(line, "param b", 7) == 0) {
-            fscanf(file, " := %d", &b);
+            sscanf(line, "param b := %d", &b);
+         /*    printf("b: %d\n", b); */
         }
+
         else if (strncmp(line, "param theta", 11) == 0) {
-            fscanf(file, " := %lf", &theta);
+            sscanf(line, "param theta := %lf", &theta);
+         /*    printf("theta: %lf\n", theta); */
         }
-        else if (strncmp(line, "param peso_vacio", 17) == 0) {
-            fscanf(file, " := %lf", &peso_vacio);
+
+        else if (strncmp(line, "param peso_vacio", 16) == 0) {
+            sscanf(line, "param peso_vacio := %lf", &peso_vacio);
+           /*  printf("peso_vacio: %lf\n", peso_vacio); */
         }
-        else if (strncmp(line, "param dm", 8) == 0) {
-            while (fscanf(file, "%d %d", &i, &j) == 2)
-                dm[i] = j;
-            }
-        else if (strncmp(line, "param d", 7) == 0) {
-            while (fscanf(file, "%d %d %lf", &i, &j, &val) == 3)
-            d[i][j] = val;
-        }
-        else if (strncmp(line, "param v", 7) == 0) {
-            while (fscanf(file, "%d %d %lf", &i, &j, &val) == 3)
-                v[i][j] = (int) val;
-            }
-        else if (strncmp(line, "param f", 7) == 0) {
-            while (fscanf(file, "%d %d", &i, &j) == 2){
-                f[i] = j;
-            }
-        }
+
         else if (strncmp(line, "param alpha", 11) == 0) {
-            for (i = 0; i < 5; i++) fscanf(file, "%*d %lf", &alpha[i]);
+            for (i = 0; i < 5; i++) {
+                fgets(line, sizeof(line), file);
+                if (strchr(line, ';')) break;
+                sscanf(line, "%d %lf", &idx, &alpha[i]);
+               /*  printf("alpha[%d]: %lf\n", idx, alpha[i]); */
+            }
         }
+
         else if (strncmp(line, "param beta", 10) == 0) {
-            for (i = 0; i < 5; i++) fscanf(file, "%*d %lf", &beta[i]);
+            for (i = 0; i < 5; i++) {
+                fgets(line, sizeof(line), file);
+                if (strchr(line, ';')) break;
+                sscanf(line, "%d %lf", &idx, &beta[i]);
+                /* printf("beta[%d]: %lf\n", idx, beta[i]); */
+            }
         }
-        else if (strncmp(line, "param gamma", 11) == 0 || strncmp(line, "param gamma_param", 17) == 0) {
-            for (i = 0; i < 5; i++) fscanf(file, "%*d %lf", &gamma_param[i]);
+
+        else if (strncmp(line, "param gamma", 11) == 0) {
+            for (i = 0; i < 5; i++) {
+                fgets(line, sizeof(line), file);
+                if (strchr(line, ';')) break;
+                sscanf(line, "%d %lf", &idx, &gamma_param[i]);
+               /*  printf("gamma_param[%d]: %lf\n", idx, gamma_param[i]); */
+            }
         }
+
         else if (strncmp(line, "param delta", 11) == 0) {
-            for (i = 0; i < 5; i++) fscanf(file, "%*d %lf", &delta_param[i]);
+            for (i = 0; i < 5; i++) {
+                fgets(line, sizeof(line), file);
+                if (strchr(line, ';')) break;
+                sscanf(line, "%d %lf", &idx, &delta_param[i]);
+           /*      printf("delta_param[%d]: %lf\n", idx, delta_param[i]); */
+            }
         }
+
         else if (strncmp(line, "param epsilon", 13) == 0) {
-            for (i = 0; i < 5; i++) fscanf(file, "%*d %lf", &epsilon[i]);
+            for (i = 0; i < 5; i++) {
+                fgets(line, sizeof(line), file);
+                if (strchr(line, ';')) break;
+                sscanf(line, "%d %lf", &idx, &epsilon[i]);
+             /*    printf("epsilon[%d]: %lf\n", idx, epsilon[i]); */
+            }
         }
+
         else if (strncmp(line, "param zeta", 10) == 0) {
-            for (i = 0; i < 5; i++) fscanf(file, "%*d %lf", &zeta[i]);
+            for (i = 0; i < 5; i++) {
+                fgets(line, sizeof(line), file);
+                if (strchr(line, ';')) break;
+                sscanf(line, "%d %lf", &idx, &zeta[i]);
+              /*   printf("zeta[%d]: %lf\n", idx, zeta[i]); */
+            }
         }
+
         else if (strncmp(line, "param hta", 9) == 0) {
-            for (i = 0; i < 5; i++) fscanf(file, "%*d %lf", &hta[i]);
+            for (i = 0; i < 5; i++) {
+                fgets(line, sizeof(line), file);
+                if (strchr(line, ';')) break;
+                sscanf(line, "%d %lf", &idx, &hta[i]);
+             /*    printf("hta[%d]: %lf\n", idx, hta[i]); */
+            }
         }
-        else if (strncmp(line, "param sigma", 11) == 0) {
-            for (i = 0; i < 11; i++)
-                fscanf(file, "%*d %lf %lf", &sigma[i][0], &sigma[i][1]);
+
+        else if (strncmp(line, "param dm", 8) == 0) {
+            while (fgets(line, sizeof(line), file)) {
+                if (strchr(line, ';')) break;
+                if (sscanf(line, "%d %d", &i, &j) == 2){
+                    dm[i] = j;
+/*                     printf("dm[%d]: %d\n", i, dm[i]); */
+                }
+            }
+        }
+
+        else if (strncmp(line, "param d", 7) == 0) {
+            while (fgets(line, sizeof(line), file)) {
+                if (strchr(line, ';')) break;
+                if (sscanf(line, "%d %d %lf", &i, &j, &val) == 3){
+                    d[i][j] = val;
+/*                     printf("d[%d][%d]: %lf\n", i, j, d[i][j]); */
+                }
+            }
+        }
+
+        else if (strncmp(line, "param v", 7) == 0) {
+            while (fgets(line, sizeof(line), file)) {
+                if (strchr(line, ';')) break;
+                if (sscanf(line, "%d %d %lf", &i, &j, &val) == 3){
+                    v[i][j] = (int)val;
+                /*     printf("v[%d][%d]: %d\n", i, j, v[i][j]); */
+                }
+            }
+        }
+
+        else if (strncmp(line, "param f", 7) == 0) {
+            while (fgets(line, sizeof(line), file)) {
+                if (strchr(line, ';')) break;
+                if (sscanf(line, "%d %d", &i, &j) == 2){
+                    f[i] = j;
+                /*     printf("f[%d]: %d\n", i, f[i]); */
+                }
+            }
         }
     }
 
     fclose(file);
-    
+
     n_nodes = n_customers + n_depots;
-    
+
     printf("Instancia cargada:\n");
     printf(" - Depósitos: %d\n", n_depots);
     printf(" - Clientes: %d\n", n_customers);
@@ -458,7 +552,7 @@ void read_dat_file(const char *filename) {
 
 
 int readInputFile(char* filePath) {
-    int debug=0;
+    int debug=1;
     FILE* fh=fopen(filePath, "r");
 
     /*check if file exists*/

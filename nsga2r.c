@@ -37,7 +37,7 @@ int obj2;
 int obj3;
 int angle1;
 int angle2;
-
+/*
 int n_depots = 0;
 int n_customers = 0;
 int n_vehicles = 0;
@@ -59,6 +59,28 @@ int f[MAX_NODES];
 int cliente = 0;
 int cliente_anterior = 0;
 int separador = 0;
+*/
+int n_depots;
+int n_customers;
+int n_vehicles;
+int n_nodes;
+int set_O[MAX_NODES];
+int set_R[MAX_NODES];
+int set_S[MAX_NODES];
+int set_K[MAX_VEHICLES];
+int demanda;
+double sigma[11][2];
+int b;
+double theta;
+double peso_vacio;
+double alpha[5], beta[5], gamma_param[5], delta_param[5], epsilon[5], zeta[5], hta[5];
+int dm[MAX_NODES];
+double d[MAX_NODES][MAX_NODES];
+int v[MAX_NODES][MAX_NODES];
+int f[MAX_NODES];
+int cliente;
+int cliente_anterior;
+int separador;
 /*
 int nreal = 0;
 int nbin = 0;
@@ -92,6 +114,7 @@ int angle2 = 0;
 
 int main (int argc, char **argv)
 {
+    printf("\n NSGA-II routine started \n");
     int i;
     FILE *fpt1;
     FILE *fpt2;
@@ -105,14 +128,17 @@ int main (int argc, char **argv)
     population *mixed_pop;
     if (argc<2)
     {
-        printf("\n Usage ./nsga2r instance_route random_seed popsize ngen nobj pcross_bin pmut_bin\n./nsga2r 0.123 b-Instancia14_cap2_relacion7UnoUnoUnoTodosDistintos.dat 100 100 2 0.6 0.01\n");
+        /* printf("\n Usage ./nsga2r instance_route random_seed popsize ngen nobj pcross_bin pmut_bin\n./nsga2r 0.123 b-Instancia14_cap2_relacion7UnoUnoUnoTodosDistintos.dat 100 100 2 0.6 0.01\n"); */
+        printf("\n Usage ./nsga2r instance_route random_seed popsize ngen nobj pcross_bin pmut_bin\n./nsga2r 0.123 Instance11.dat 100 100 2 0 0\n");
         exit(1);
     }
+    printf("\n Number of arguments entered = %d",argc);
     seed = (double)atof(argv[1]);
     if (seed<=0.0 || seed>=1.0){
         printf("\n Entered seed value is wrong, seed value must be in (0,1) \n");
         exit(1);
     }
+    printf("\n Seed value entered is : %e",seed);
     fpt1 = fopen("initial_pop.out","w");
     fpt2 = fopen("final_pop.out","w");
     fpt3 = fopen("best_pop.out","w");
@@ -123,6 +149,12 @@ int main (int argc, char **argv)
     fprintf(fpt3,"# This file contains the data of final feasible population (if found)\n");
     fprintf(fpt4,"# This file contains the data of all generations\n");
     fprintf(fpt5,"# This file contains information about inputs as read by the program\n");
+    if (fpt1==NULL || fpt2==NULL || fpt3==NULL || fpt4==NULL || fpt5==NULL)
+    {
+        printf("\n Error opening output files, hence exiting \n");
+        exit(1);
+    }
+    printf("\n Output files opened successfully \n");
 
     char * instance_route = argv[2];
     /* readInputFile(instance_route, pi); */
@@ -179,6 +211,7 @@ int main (int argc, char **argv)
                 exit(1);
             }
         }
+}
     */
     pcross_bin = atof (argv[6]);
     if (pcross_bin<0.0 || pcross_bin>1.0){
@@ -251,6 +284,7 @@ int main (int argc, char **argv)
     printf("\n Initialization done, now performing first generation\n");
     decode_pop(parent_pop);
     evaluate_pop (parent_pop);
+    printf("\n Evaluation of initial population done, now performing non-dominated sorting\n");
     assign_rank_and_crowding_distance (parent_pop);
     report_pop (parent_pop, fpt1);
     fprintf(fpt4,"# gen = 1\n");

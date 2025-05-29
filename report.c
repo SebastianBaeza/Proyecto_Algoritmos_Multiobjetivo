@@ -87,6 +87,11 @@ void report_feasible (population *pop, FILE *fpt)
             fprintf(fpt,"%e\t",pop->ind[i].constr_violation);
             fprintf(fpt,"%d\t",pop->ind[i].rank);
             fprintf(fpt,"%e\n",pop->ind[i].crowd_dist);
+            for (j = 0; j < pop->ind[i].route_length; j++)
+            {
+                fprintf(fpt,"%d ", pop->ind[i].route[j]);
+                fprintf(fpt,"\n");
+            }
         }
     }
     return;
