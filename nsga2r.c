@@ -265,7 +265,7 @@ int main (int argc, char **argv)
         exit (1);
     }
 
-    printf("\n Input data successfully entered, now performing initialization \n");
+/*     printf("\n Input data successfully entered, now performing initialization \n"); */
     fprintf(fpt5,"\n Population size = %d",popsize);
     fprintf(fpt5,"\n Number of generations = %d",ngen);
     fprintf(fpt5,"\n Number of objective functions = %d",nobj);
@@ -340,11 +340,11 @@ int main (int argc, char **argv)
     sleep(1);
     for (i=2; i<=ngen; i++)
     {
-        printf("\n Generation %d started, selection and crossover",i);
+/*         printf("\n Generation %d started, selection and crossover",i); */
         selection (parent_pop, child_pop);
-        printf("\n Crossover done, now performing mutation");
+/*         printf("\n Crossover done, now performing mutation"); */
         mutation_pop (child_pop);
-        printf("\n Mutation done, now decoding and evaluating child population");
+/*         printf("\n Mutation done, now decoding and evaluating child population"); */
         decode_pop(child_pop);
         evaluate_pop(child_pop);
         merge (parent_pop, child_pop, mixed_pop);
@@ -356,7 +356,7 @@ int main (int argc, char **argv)
         fflush(fpt4);
         printf("\n gen = %d",i);
     }
-    printf("\n Generations finished, now reporting solutions");
+/*     printf("\n Generations finished, now reporting solutions"); */
     report_pop(parent_pop,fpt2);
     report_feasible(parent_pop,fpt3);
     if (nreal!=0)
