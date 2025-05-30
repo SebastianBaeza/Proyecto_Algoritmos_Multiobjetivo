@@ -21,14 +21,15 @@ void mutation_pop (population *pop)
 /* Function to perform mutation of an individual */
 void mutation_ind (individual *ind)
 {
-    if (nreal!=0)
+/*     if (nreal!=0)
     {
         real_mutate_ind(ind);
-    }
-    if (nbin!=0)
-    {
-        bin_mutate_ind(ind);
-    }
+        }
+        if (nbin!=0)
+        {
+            bin_mutate_ind(ind);
+            } */
+    real_mutate_ind(ind);
     return;
 }
 
@@ -62,6 +63,7 @@ void bin_mutate_ind (individual *ind)
 /* Routine for swap mutation of an individual's route (for RCMDVRP) */
 void real_mutate_ind (individual *ind)
 {
+    printf("\n Performing swap mutation on individual with route length %d\n", ind->route_length);
     int j;
     if (ind->route_length < 2) return;
 
@@ -83,6 +85,7 @@ void real_mutate_ind (individual *ind)
             nrealmut += 1;
         }
     }
+    printf("\n Swap mutation completed, total mutations: %d\n", nrealmut);
     return;
 }
 

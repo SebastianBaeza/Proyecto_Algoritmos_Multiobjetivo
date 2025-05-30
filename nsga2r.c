@@ -129,7 +129,7 @@ int main (int argc, char **argv)
     if (argc<2)
     {
         /* printf("\n Usage ./nsga2r instance_route random_seed popsize ngen nobj pcross_bin pmut_bin\n./nsga2r 0.123 b-Instancia14_cap2_relacion7UnoUnoUnoTodosDistintos.dat 100 100 2 0.6 0.01\n"); */
-        printf("\n Usage ./nsga2r instance_route random_seed popsize ngen nobj pcross_bin pmut_bin\n./nsga2r 0.123 Instance11.dat 100 100 2 0 0\n");
+        printf("\n Usage ./nsga2r instance_route random_seed popsize ngen nobj pcross_bin pmut_bin pcross_real pmut_real\n./nsga2r 0.123 Instance11.dat 100 100 2 0 0 0.6 0.1\n");
         exit(1);
     }
     printf("\n Number of arguments entered = %d",argc);
@@ -178,8 +178,8 @@ int main (int argc, char **argv)
         printf("\n Wrong number of objectives entered, hence exiting \n");
         exit (1);
     }
-    /* Setear en lectura de instancia --
-    printf("\n Enter the number of binary variables : ");
+
+    /* printf("\n Enter the number of binary variables : ");
     scanf("%d",&nbin);
     if (nbin<0)
     {
@@ -211,7 +211,33 @@ int main (int argc, char **argv)
                 exit(1);
             }
         }
-}
+    } */
+
+    printf("\n Enter the number of real variables : ");
+    scanf("%d", &nreal);
+    if (nreal < 0)
+    {
+        printf ("\n number of real variables entered is : %d", nreal);
+        printf ("\n Wrong number of real variables entered, hence exiting \n");
+        exit(1);
+    }
+    /* if (nreal != 0)
+    {
+        min_realvar = (double *)malloc(nreal * sizeof(double));
+        max_realvar = (double *)malloc(nreal * sizeof(double));
+        for (i = 0; i < nreal; i++)
+        {
+            printf ("\n Enter the lower limit of real variable %d : ", i+1);
+            scanf ("%lf", &min_realvar[i]);
+            printf ("\n Enter the upper limit of real variable %d : ", i+1);
+            scanf ("%lf", &max_realvar[i]);
+            if (max_realvar[i] <= min_realvar[i])
+            {
+                printf("\n Wrong limits entered for the min and max bounds of real variable entered, hence exiting \n");
+                exit(1);
+            }
+        }
+    }
     */
     pcross_bin = atof (argv[6]);
     if (pcross_bin<0.0 || pcross_bin>1.0){
@@ -226,12 +252,25 @@ int main (int argc, char **argv)
         exit (1);
     }
 
+    pcross_real = atof (argv[8]);
+    if (pcross_real<0.0 || pcross_real>1.0){
+        printf("\n Probability of crossover entered is : %e",pcross_real);
+        printf("\n Entered value of probability of crossover of real variables is out of bounds, hence exiting \n");
+        exit (1);
+    }
+    pmut_real = atof (argv[9]);
+    if (pmut_real<0.0 || pmut_real>1.0){
+        printf("\n Probability of mutation entered is : %e",pmut_real);
+        printf("\n Entered value of probability  of mutation of real variables is out of bounds, hence exiting \n");
+        exit (1);
+    }
+
     printf("\n Input data successfully entered, now performing initialization \n");
     fprintf(fpt5,"\n Population size = %d",popsize);
     fprintf(fpt5,"\n Number of generations = %d",ngen);
     fprintf(fpt5,"\n Number of objective functions = %d",nobj);
-    /*fprintf(fpt5,"\n Number of constraints = %d",ncon);
-    fprintf(fpt5,"\n Number of real variables = %d",nreal);
+    fprintf(fpt5,"\n Number of constraints = %d",ncon);
+/*     fprintf(fpt5,"\n Number of real variables = %d",nreal);
     if (nreal!=0)
     {
         for (i=0; i<nreal; i++)
@@ -243,7 +282,7 @@ int main (int argc, char **argv)
         fprintf(fpt5,"\n Probability of mutation of real variable = %e",pmut_real);
         fprintf(fpt5,"\n Distribution index for crossover = %e",eta_c);
         fprintf(fpt5,"\n Distribution index for mutation = %e",eta_m);
-    }*/
+    }
     fprintf(fpt5,"\n Number of binary variables = %d",nbin);
     if (nbin!=0)
     {
@@ -255,24 +294,24 @@ int main (int argc, char **argv)
         }
         fprintf(fpt5,"\n Probability of crossover of binary variable = %e",pcross_bin);
         fprintf(fpt5,"\n Probability of mutation of binary variable = %e",pmut_bin);
-    }
+    } */
     fprintf(fpt5,"\n Seed for random number generator = %e",seed);
-    bitlength = 0;
+/*     bitlength = 0;
     if (nbin!=0)
     {
         for (i=0; i<nbin; i++)
         {
             bitlength += nbits[i];
         }
-    }
+    } */
     fprintf(fpt1,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
     fprintf(fpt2,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
     fprintf(fpt3,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
     fprintf(fpt4,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
     nbinmut = 0;
-    nrealmut = 0;
+    nrealmut = 0.5;
     nbincross = 0;
-    nrealcross = 0;
+    nrealcross = 0.5;
     parent_pop = (population *)malloc(sizeof(population));
     child_pop = (population *)malloc(sizeof(population));
     mixed_pop = (population *)malloc(sizeof(population));
@@ -301,8 +340,11 @@ int main (int argc, char **argv)
     sleep(1);
     for (i=2; i<=ngen; i++)
     {
+        printf("\n Generation %d started, selection and crossover",i);
         selection (parent_pop, child_pop);
+        printf("\n Crossover done, now performing mutation");
         mutation_pop (child_pop);
+        printf("\n Mutation done, now decoding and evaluating child population");
         decode_pop(child_pop);
         evaluate_pop(child_pop);
         merge (parent_pop, child_pop, mixed_pop);

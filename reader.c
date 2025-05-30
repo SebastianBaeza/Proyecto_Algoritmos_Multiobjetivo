@@ -348,12 +348,12 @@ void read_dat_file(const char *filename) {
         printf("Error al abrir archivo: %s\n", filename);
         exit(1);
     }
-    printf("Reading file: %s\n", filename);
+/*     printf("Reading file: %s\n", filename); */
 
     char line[512];
     int i, j, idx;
     double val; 
-    char *p;
+    char *p, *end, *token;
 
     while (fgets(line, sizeof(line), file)) {
         if (strncmp(line, "param sigma", 11) == 0) {
@@ -552,7 +552,7 @@ void read_dat_file(const char *filename) {
 
 
 int readInputFile(char* filePath) {
-    int debug=1;
+    int debug=0;
     FILE* fh=fopen(filePath, "r");
 
     /*check if file exists*/

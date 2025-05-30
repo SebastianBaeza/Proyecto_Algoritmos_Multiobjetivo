@@ -10,19 +10,19 @@
 double compute_emission(int i, int j)
 {
     double s = v[i][j];
+    if (s == 0) {
+        return 0.0; 
+    }
 
     double f = 0.0;
     int l;
     for (l = 1; l < 5; l++) {
-        /*
-        // f += (alpha[l] * pow(w, 4 - l)) +
-        //      (beta[l] * pow(s, 4 - l)) +
-        //      (gamma_param[l] * pow(w, 4 - l) * pow(s, l)) +
-        //      (delta_param[l] * pow(s, 4 - l) * pow(w, l)) +
-        //      (epsilon[l] * pow(s, 4 - l) * pow(w, l)) +
-        //      (zeta[l]) + (hta[l]);
-        */
+/*         printf("s: %lf\n", s);
+         printf("alpha[%d]: %lf, beta[%d]: %lf, gamma_param[%d]: %lf, delta_param[%d]: %lf, epsilon[%d]: %lf, zeta[%d]: %lf, hta[%d]: %lf\n",
+              l, alpha[l], l, beta[l], l, gamma_param[l], l, delta_param[l], l, epsilon[l], l, zeta[l], l, hta[l]);
+        printf("f: %lf\n", f); */
         f += ((alpha[l] * pow(s, 2)) + (beta[l] * s) + (gamma_param[l]) + (delta_param[l] / s))/((epsilon[l] * pow(s, 2)) + (zeta[l] * s) + (hta[l]));
+        /* printf("f calculado: %lf\n", f); */
     }
     return f;
 }
@@ -121,6 +121,7 @@ void evaluate_ind(individual *ind)
 
             total_distance += d[prev_node][0];
             total_emissions += d[prev_node][0] * ((peso_vacio + current_capacity) + compute_emission(prev_node, current_depot));
+/*             printf("current Total distance: %lf, Total emissions: %lf\n", total_distance, total_emissions); */
             if (current_capacity > b) constr_viol += current_capacity - b;
             if (current_risk > theta) constr_viol += current_risk - theta;
 
@@ -155,7 +156,10 @@ void evaluate_ind(individual *ind)
 
     ind->obj[0] = total_distance;
     ind->obj[1] = total_emissions;
+/* 
+    printf("Total distance: %lf, Total emissions: %lf\n", total_distance, total_emissions);
 
     ind->constr_violation = constr_viol;
+    printf("Constraint violation: %lf\n", constr_viol); */
 }
 
