@@ -24,7 +24,7 @@ void report_pop (population *pop, FILE *fpt)
                 fprintf(fpt,"%e\t",pop->ind[i].constr[j]);
             }
         }
-        if (nreal!=0)
+/*         if (nreal!=0)
         {
             for (j=0; j<nreal; j++)
             {
@@ -40,10 +40,19 @@ void report_pop (population *pop, FILE *fpt)
                     fprintf(fpt,"%d\t",pop->ind[i].gene[j][k]);
                 }
             }
-        }
+        } */
         fprintf(fpt,"%e\t",pop->ind[i].constr_violation);
         fprintf(fpt,"%d\t",pop->ind[i].rank);
         fprintf(fpt,"%e\n",pop->ind[i].crowd_dist);
+
+        /* // Imprime la ruta en una sola línea debajo de la información principal */
+        if (pop->ind[i].route_length > 0 && pop->ind[i].route != NULL) {
+            for (j = 0; j < pop->ind[i].route_length; j++)
+            {
+                fprintf(fpt,"%d ", pop->ind[i].route[j]);
+            }
+            fprintf(fpt,"\n");
+        }
     }
     return;
 }
@@ -67,7 +76,7 @@ void report_feasible (population *pop, FILE *fpt)
                     fprintf(fpt,"%e\t",pop->ind[i].constr[j]);
                 }
             }
-            if (nreal!=0)
+/*             if (nreal!=0)
             {
                 for (j=0; j<nreal; j++)
                 {
@@ -83,13 +92,17 @@ void report_feasible (population *pop, FILE *fpt)
                         fprintf(fpt,"%d\t",pop->ind[i].gene[j][k]);
                     }
                 }
-            }
+            } */
             fprintf(fpt,"%e\t",pop->ind[i].constr_violation);
             fprintf(fpt,"%d\t",pop->ind[i].rank);
             fprintf(fpt,"%e\n",pop->ind[i].crowd_dist);
-            for (j = 0; j < pop->ind[i].route_length; j++)
-            {
-                fprintf(fpt,"%d ", pop->ind[i].route[j]);
+
+            /* // Imprime la ruta en una sola línea debajo de la información principal */
+            if (pop->ind[i].route_length > 0 && pop->ind[i].route != NULL) {
+                for (j = 0; j < pop->ind[i].route_length; j++)
+                {
+                    fprintf(fpt,"%d ", pop->ind[i].route[j]);
+                }
                 fprintf(fpt,"\n");
             }
         }

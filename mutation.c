@@ -73,12 +73,12 @@ void real_mutate_ind (individual *ind)
         {
             int pos1, pos2, temp;
 
-/*             printf("Child route before mutation: ");
+            printf("Child route before mutation: ");
             for (i = 0; i < ind->route_length; i++)
             {
                 printf("%d ", ind->route[i]);
             }
-            printf("\n"); */
+            printf("\n");
     
             do {
                 pos1 = rnd(0, ind->route_length - 1);
@@ -89,16 +89,16 @@ void real_mutate_ind (individual *ind)
             ind->route[pos1] = ind->route[pos2];
             ind->route[pos2] = temp;
     
-/*             printf("Child route after mutation: ");
+            printf("Child route after mutation: ");
             for (j = 0; j < ind->route_length; j++)
             {
                 printf("%d ", ind->route[j]);
-            } */
+            }
             nrealmut += 1;
         }
     }
-/*     printf("\n");
-    printf("\n Swap mutation completed, total mutations: %d\n", nrealmut); */
+    printf("\n");
+    printf("\n Swap mutation completed, total mutations: %d\n", nrealmut);
     return;
 }
 

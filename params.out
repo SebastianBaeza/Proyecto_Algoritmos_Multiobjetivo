@@ -3,7 +3,7 @@
  Population size = 100
  Number of generations = 100
  Number of objective functions = 2
- Number of constraints = 0
- Seed for random number generator = 1.342000e-01
- Number of crossover of real variable = 2936
- Number of mutation of real variable = 286
+ Number of constraints = 1
+ Seed for random number generator = 4.340000e-01
+ Number of crossover of real variable = 2922
+ Number of mutation of real variable = 997

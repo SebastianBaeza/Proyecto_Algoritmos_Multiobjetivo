@@ -213,14 +213,16 @@ int main (int argc, char **argv)
         }
     } */
 
-    printf("\n Enter the number of real variables : ");
+/*     printf("\n Enter the number of real variables : ");
     scanf("%d", &nreal);
     if (nreal < 0)
     {
         printf ("\n number of real variables entered is : %d", nreal);
         printf ("\n Wrong number of real variables entered, hence exiting \n");
         exit(1);
-    }
+    } */
+    nreal = 1;
+    ncon = 1;
     /* if (nreal != 0)
     {
         min_realvar = (double *)malloc(nreal * sizeof(double));
@@ -304,10 +306,14 @@ int main (int argc, char **argv)
             bitlength += nbits[i];
         }
     } */
-    fprintf(fpt1,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
+    fprintf(fpt1,"# of objectives = %d, # of constraints = %d, constr_violation, rank, crowding_distance\n",nobj,ncon);
+    fprintf(fpt2,"# of objectives = %d, # of constraints = %d, constr_violation, rank, crowding_distance\n",nobj,ncon);
+    fprintf(fpt3,"# of objectives = %d, # of constraints = %d, constr_violation, rank, crowding_distance\n",nobj,ncon);
+    fprintf(fpt4,"# of objectives = %d, # of constraints = %d, constr_violation, rank, crowding_distance\n",nobj,ncon);
+/*  fprintf(fpt1,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
     fprintf(fpt2,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
     fprintf(fpt3,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
-    fprintf(fpt4,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
+    fprintf(fpt4,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength); */
     nbinmut = 0;
     nrealmut = 0.5;
     nbincross = 0;

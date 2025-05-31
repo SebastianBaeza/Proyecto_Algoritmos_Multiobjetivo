@@ -367,12 +367,12 @@ void read_dat_file(const char *filename) {
 
         else if (strncmp(line, "set O", 5) == 0) {
             n_depots = 0;
-            char *p = strstr(line, ":=");
+            p = strstr(line, ":=");
             if (!p) continue;
             p += 2;
-            char *end = strchr(p, ';');
+            end = strchr(p, ';');
             if (end) *end = '\0';
-            char *token = strtok(p, " \t\n\r");
+            token = strtok(p, " \t\n\r");
             while (token) {
                 set_O[n_depots++] = atoi(token);
                 token = strtok(NULL, " \t\n\r");
@@ -381,12 +381,12 @@ void read_dat_file(const char *filename) {
 
         else if (strncmp(line, "set R", 5) == 0) {
             n_customers = 0;
-            char *p = strstr(line, ":=");
+            p = strstr(line, ":=");
             if (!p) continue;
             p += 2;
-            char *end = strchr(p, ';');
+            end = strchr(p, ';');
             if (end) *end = '\0';
-            char *token = strtok(p, " \t\n\r");
+            token = strtok(p, " \t\n\r");
             while (token) {
                 set_R[n_customers++] = atoi(token);
                 token = strtok(NULL, " \t\n\r");
@@ -395,12 +395,12 @@ void read_dat_file(const char *filename) {
 
         else if (strncmp(line, "set S", 5) == 0) {
             int n = 0;
-            char *p = strstr(line, ":=");
+            p = strstr(line, ":=");
             if (!p) continue;
             p += 2;
-            char *end = strchr(p, ';');
+            end = strchr(p, ';');
             if (end) *end = '\0';
-            char *token = strtok(p, " \t\n\r");
+            token = strtok(p, " \t\n\r");
             while (token) {
                 set_S[n++] = atoi(token);
                 token = strtok(NULL, " \t\n\r");
@@ -409,12 +409,12 @@ void read_dat_file(const char *filename) {
 
         else if (strncmp(line, "set K", 5) == 0) {
             n_vehicles = 0;
-            char *p = strstr(line, ":=");
+            p = strstr(line, ":=");
             if (!p) continue;
             p += 2;
-            char *end = strchr(p, ';');
+            end = strchr(p, ';');
             if (end) *end = '\0';
-            char *token = strtok(p, " \t\n\r");
+            token = strtok(p, " \t\n\r");
             while (token) {
                 set_K[n_vehicles++] = atoi(token);
                 token = strtok(NULL, " \t\n\r");
