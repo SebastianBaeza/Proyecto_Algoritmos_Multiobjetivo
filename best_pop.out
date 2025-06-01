@@ -1,4 +1,2 @@
 # This file contains the data of final feasible population (if found)
-# of objectives = 2, # of constraints = 1, constr_violation, rank, crowding_distance
-3.242000e+01	1.136281e+05	0.000000e+00	0.000000e+00	1	1.000000e+14
-24 7 13 17 -1 8 25 18 -2 20 6 23 -3 14 22 -4 5 4 3 -5 11 16 12 10 -6 15 21 19 -7 2 9 
+# of objectives = 2, # of constraints = 3, constr_violation, rank, crowding_distance

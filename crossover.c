@@ -8,11 +8,24 @@
 # include "rand.h"
 
 
-int valueinarray(int val, int *arr, size_t n) {
-    size_t i;
+int valueinarray(int val, int *arr, int n) {
+    int i;
+/*     printf("Searching for value %d in array of length %d\n", val, n); */
+    if (n <= 0) {
+        printf("Array is empty or invalid length.\n");
+        return 0;
+    }
+    if (arr == NULL) {
+        printf("Array pointer is NULL.\n");
+        return 0;
+    }
     for(i = 0; i < n; i++) {
         if(arr[i] == val)
+        {
+/*             printf("Value %d found at index %d\n", arr[i], i);
+            printf("Value found in array. Ending iteration\n"); */
             return 1;
+        }
     }
     return 0;
 }
@@ -56,6 +69,7 @@ void realcross (individual *parent1, individual *parent2, individual *child1, in
     separador = -1;
     int cliente_anterior = 0;
     int demanda;
+    int n_veh;
 
     if (randomperc() <= pcross_real)
     {
@@ -68,6 +82,8 @@ void realcross (individual *parent1, individual *parent2, individual *child1, in
         parent2_n->route = (int *)malloc(MAX_NODES * sizeof(int));
         child1_n->route = (int *)malloc(MAX_NODES * sizeof(int));
         child2_n->route = (int *)malloc(MAX_NODES * sizeof(int));
+        child1_n->route_length = 0;
+        child2_n->route_length = 0;
 
 /*         // Copia rutas de los padres a los temporales */
         printf("Parent1 route: ");
@@ -78,6 +94,8 @@ void realcross (individual *parent1, individual *parent2, individual *child1, in
         for (i = 0; i < parent2->route_length; i++) {
             printf("%d ", parent2->route[i]);
         }
+        printf("\n");
+        printf("parent1->route_length: %d, parent2->route_length: %d\n", parent1->route_length, parent2->route_length);
         printf("\n");
 
         for (i = 0; i < n_customers; i++) {
@@ -96,12 +114,12 @@ void realcross (individual *parent1, individual *parent2, individual *child1, in
             }
             internal_counter2++;
         }
-
+/* 
         printf("Parent1_n route: ");
         for (i = 0; i < n_customers; i++) printf("%d ", parent1_n->route[i]);
         printf("\nParent2_n route: ");
         for (i = 0; i < n_customers; i++) printf("%d ", parent2_n->route[i]);
-        printf("\n");
+        printf("\n"); */
 
 /*         // Inicializa rutas de hijos temporales a un valor inválido */
 /*         for (i = 0; i < n_customers; i++) {
@@ -116,33 +134,42 @@ void realcross (individual *parent1, individual *parent2, individual *child1, in
             {
                 for (counter = 0; counter < n_customers; counter++)
                 {
-                    printf("counter=%d, parent1_n->route[counter]=%d, parent2_n->route[counter]=%d\n", counter, parent1_n->route[counter], parent2_n->route[counter]);
-                    if (valueinarray(parent1_n->route[counter],child1_n->route, n_customers) == 1){
+                    /* printf("child1_n->route_length: %d, child2_n->route_length: %d\n", child1_n->route_length, child2_n->route_length); */
+                    if (child1_n->route_length >= MAX_NODES || child2_n->route_length >= MAX_NODES) {
+                        printf("Error: Child route length exceeds maximum nodes.\n");
+                        exit(1);
+                    }
+                    /* printf("counter=%d, parent1_n->route[counter]=%d, parent2_n->route[counter]=%d\n", counter, parent1_n->route[counter], parent2_n->route[counter]); */
+                    if (valueinarray(parent1_n->route[counter],child1_n->route, child1_n->route_length) == 1){
                         child2_n->route[indice2] = parent1_n->route[counter];
-                        printf("child2_n->route[%d] = %d\n", indice2, parent1_n->route[counter]);
+                        child2_n->route_length++;
+                        /* printf("child2_n->route[%d] = %d\n", indice2, parent1_n->route[counter]); */
                         indice2++;
                     } else {
                         child1_n->route[indice1] = parent1_n->route[counter];
-                        printf("child1_n->route[%d] = %d\n", indice1, parent1_n->route[counter]);
+                        child1_n->route_length++;
+                        /* printf("child1_n->route[%d] = %d\n", indice1, parent1_n->route[counter]); */
                         indice1++;
                     }
 
-                    if (valueinarray(parent2_n->route[counter],child1_n->route, n_customers) == 1){
+                    if (valueinarray(parent2_n->route[counter],child1_n->route, child1_n->route_length) == 1){
                         child2_n->route[indice2] = parent2_n->route[counter];
-                        printf("child2_n->route[%d] = %d\n", indice2, parent2_n->route[counter]);
+                        child2_n->route_length++;
+                        /* printf("child2_n->route[%d] = %d\n", indice2, parent2_n->route[counter]); */
                         indice2++;
                     } else {
                         child1_n->route[indice1] = parent2_n->route[counter];
-                        printf("child1_n->route[%d] = %d\n", indice1, parent2_n->route[counter]);
+                        child1_n->route_length++;
+                        /* printf("child1_n->route[%d] = %d\n", indice1, parent2_n->route[counter]); */
                         indice1++;
                     }
                 }
-
+/* 
                 printf("child1_n route after assignment: ");
                 for (j = 0; j < n_customers; j++) printf("%d ", child1_n->route[j]);
                 printf("\nchild2_n route after assignment: ");
                 for (j = 0; j < n_customers; j++) printf("%d ", child2_n->route[j]);
-                printf("\n");
+                printf("\n"); */
 /* 
                 // Construcción de la ruta final para child1 */
                 child1->route_length = 0;
@@ -151,27 +178,39 @@ void realcross (individual *parent1, individual *parent2, individual *child1, in
                 riesgo = 0.0;
                 cliente_anterior = 0;
                 separador = -1;
+                n_veh = 1;
                 for (j = 0; j < n_customers; j++) {
-                    cliente = child1_n->route[j];
-                    demanda = dm[cliente];
+                    if (n_veh < n_vehicles){
 
-                    if (carga + demanda > capacidad || riesgo + demanda * d[cliente_anterior][cliente] > riesgo_max) {
-                        child1->route[child_route_pos++] = separador;
-                        printf("child1->route[%d] = separador (%d)\n", child_route_pos-1, separador);
-                        separador -= 1; 
+                        cliente = child1_n->route[j];
+                        demanda = dm[cliente];
+
+                        if (carga + demanda > capacidad || riesgo + demanda * d[cliente_anterior][cliente] > riesgo_max) {
+                            child1->route[child_route_pos++] = separador;
+    /*                         printf("child1->route[%d] = separador (%d)\n", child_route_pos-1, separador); */
+                            separador -= 1; 
+                            child1->route_length++;
+                            carga = 0; 
+                            riesgo = 0.0; 
+                            n_veh++;
+                            if (n_veh > n_vehicles) {
+                                child1->route[child_route_pos++] = separador;
+                            }
+                        }
+
+                        child1->route[child_route_pos++] = cliente;
+    /*                     printf("child1->route[%d] = %d\n", child_route_pos-1, cliente); */
+                        riesgo += demanda * d[cliente_anterior][cliente];
                         child1->route_length++;
-                        carga = 0; 
-                        riesgo = 0.0; 
+                        carga += demanda;
+                        cliente_anterior = cliente; 
+                    } else {
+                        child1->constr[0] += dm[child1_n->route[j]];
+                        child1->route[child_route_pos++] = child1_n->route[j];
+                        child1->route_length++;
                     }
-
-                    child1->route[child_route_pos++] = cliente;
-                    printf("child1->route[%d] = %d\n", child_route_pos-1, cliente);
-                    riesgo += demanda * d[cliente_anterior][cliente];
-                    child1->route_length++;
-                    carga += demanda;
-                    cliente_anterior = cliente; 
                 }
-                printf("\n");
+/*                 printf("\n"); */
 
 /*                 // Construcción de la ruta final para child2 */
                 carga = 0;
@@ -184,9 +223,10 @@ void realcross (individual *parent1, individual *parent2, individual *child1, in
                     cliente = child2_n->route[j];
                     demanda = dm[cliente];
 
-                    if (carga + demanda > capacidad || riesgo + demanda * d[cliente_anterior][cliente] > riesgo_max) {
+                    if (carga + demanda > capacidad || riesgo + demanda * d[cliente_anterior][cliente] > riesgo_max) 
+                    {
                         child2->route[child_route_pos++] = separador;
-                        printf("child2->route[%d] = separador (%d)\n", child_route_pos-1, separador);
+ /*                        printf("child2->route[%d] = separador (%d)\n", child_route_pos-1, separador); */
                         separador -= 1;
                         child2->route_length++;
                         carga = 0;
@@ -194,7 +234,7 @@ void realcross (individual *parent1, individual *parent2, individual *child1, in
                     }
 
                     child2->route[child_route_pos++] = cliente;
-                    printf("child2->route[%d] = %d\n", child_route_pos-1, cliente);
+/*                     printf("child2->route[%d] = %d\n", child_route_pos-1, cliente); */
                     riesgo += demanda * d[cliente_anterior][cliente];
                     child2->route_length++;
                     carga += demanda;

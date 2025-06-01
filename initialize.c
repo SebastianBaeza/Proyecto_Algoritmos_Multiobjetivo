@@ -67,13 +67,18 @@ void initialize_ind (individual *ind)
                 carga = 0;
                 riesgo = 0.0;
                 n_veh++;
+                if (n_veh > n_vehicles * n_depots) {
+                    ind->route[pos++] = separador;
+                }
             }
             ind->route[pos++] = c;
             carga += demanda;
             riesgo += riesgo_cliente;
             cliente_anterior = c; 
         } else {
-            ind->constr[0] += dm[clientes[i]];
+/*             ind->constr[0] += dm[clientes[i]];
+            ind->constr[2] += 1; */
+            ind->route[pos++] = clientes[i];
         }
     }
     ind->route_length = pos;

@@ -114,6 +114,9 @@ void evaluate_ind(individual *ind)
     int current_depot = set_O[0]; 
 
     int i;
+    /* Constraint 1: Capacity
+    Constraint 2: risk
+    Constraint 3: Vehicles */
     for (i = 0; i < ind->route_length; i++) {
         current_node = ind->route[i];
 
@@ -122,8 +125,10 @@ void evaluate_ind(individual *ind)
             total_distance += d[prev_node][0];
             total_emissions += d[prev_node][0] * ((peso_vacio + current_capacity) + compute_emission(prev_node, current_depot));
 /*             printf("current Total distance: %lf, Total emissions: %lf\n", total_distance, total_emissions); */
-            if (current_capacity > b) constr_viol += current_capacity - b;
+/*             if (current_capacity > b) constr_viol += current_capacity - b;
             if (current_risk > theta) constr_viol += current_risk - theta;
+ */         if (current_capacity > b) ind->constr[0] += current_capacity - b;
+            if (current_risk > theta) ind->constr[1] += current_risk - theta;
 
             current_capacity = 0;
             current_risk = 0.0;
@@ -132,6 +137,9 @@ void evaluate_ind(individual *ind)
             if (current_vehicle >= n_vehicles) {
                 current_depot = set_O[++depot_counter]; 
                 current_vehicle = 0;
+            }
+            if (depot_counter >= n_depots) {
+                ind->constr[2] += 1;
             }
         } else {
             demanda = dm[current_node];
@@ -150,10 +158,11 @@ void evaluate_ind(individual *ind)
     if (prev_node != 0) {
         total_distance += d[prev_node][current_depot];
         total_emissions += d[prev_node][current_depot] * ((peso_vacio + current_capacity) + compute_emission(prev_node, current_depot));
-        if (current_capacity > b) constr_viol += current_capacity - b;
-        if (current_risk > theta) constr_viol += current_risk - theta;
+        if (current_capacity > b) ind->constr[0] += current_capacity - b;
+        if (current_risk > theta) ind->constr[1] += current_risk - theta;
     }
-
+    ind->constr_violation += ind->constr[0] + ind->constr[1] + ind->constr[2];
+    
     ind->obj[0] = total_distance;
     ind->obj[1] = total_emissions;
 /* 

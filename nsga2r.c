@@ -129,7 +129,7 @@ int main (int argc, char **argv)
     if (argc<2)
     {
         /* printf("\n Usage ./nsga2r instance_route random_seed popsize ngen nobj pcross_bin pmut_bin\n./nsga2r 0.123 b-Instancia14_cap2_relacion7UnoUnoUnoTodosDistintos.dat 100 100 2 0.6 0.01\n"); */
-        printf("\n Usage ./nsga2r instance_route random_seed popsize ngen nobj pcross_bin pmut_bin pcross_real pmut_real\n./nsga2r 0.123 Instance11.dat 100 100 2 0 0 0.6 0.1\n");
+        printf("\n Usage ./nsga2r random_seed instance_route popsize ngen nobj pcross_real pmut_real\n./nsga2r 0.123 Instance11.dat 100 100 2 0.6 0.1\n");
         exit(1);
     }
     printf("\n Number of arguments entered = %d",argc);
@@ -222,7 +222,7 @@ int main (int argc, char **argv)
         exit(1);
     } */
     nreal = 1;
-    ncon = 1;
+    ncon = 3;
     /* if (nreal != 0)
     {
         min_realvar = (double *)malloc(nreal * sizeof(double));
@@ -254,13 +254,13 @@ int main (int argc, char **argv)
         exit (1);
     }
 
-    pcross_real = atof (argv[8]);
+    pcross_real = atof (argv[6]);
     if (pcross_real<0.0 || pcross_real>1.0){
         printf("\n Probability of crossover entered is : %e",pcross_real);
         printf("\n Entered value of probability of crossover of real variables is out of bounds, hence exiting \n");
         exit (1);
     }
-    pmut_real = atof (argv[9]);
+    pmut_real = atof (argv[7]);
     if (pmut_real<0.0 || pmut_real>1.0){
         printf("\n Probability of mutation entered is : %e",pmut_real);
         printf("\n Entered value of probability  of mutation of real variables is out of bounds, hence exiting \n");
@@ -314,6 +314,13 @@ int main (int argc, char **argv)
     fprintf(fpt2,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
     fprintf(fpt3,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength);
     fprintf(fpt4,"# of objectives = %d, # of constraints = %d, # of real_var = %d, # of bits of bin_var = %d, constr_violation, rank, crowding_distance\n",nobj,ncon,nreal,bitlength); */
+    
+
+    /* Constraint 1: Capacity
+    Constraint 2: risk
+    Constraint 3: Vehicles */
+
+    
     nbinmut = 0;
     nrealmut = 0.5;
     nbincross = 0;
