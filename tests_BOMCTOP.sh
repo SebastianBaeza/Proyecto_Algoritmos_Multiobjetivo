@@ -6,16 +6,17 @@ instanceList=$(ls ${dirInstances})
 
 #Final best parameter configuration: a=0.4, p=48, pc=0.3, pi=0.75, pm=0.25, pw=0.3
 #Parametros de acuerdo a tuning
-p=48
-gen=625000
+p=100
+gen=100
 no=2
-pc=0.3
-pm=0.25
+pc=0.6
+pm=0.1
 pi=0.75
 pw=0.3
 a=0.4
 
-params="${p} ${gen} ${no} ${pc} ${pm} ${pi} ${pw} ${a}"
+params="${p} ${gen} ${no} ${pc} ${pm}"
+# params="${p} ${gen} ${no} ${pc} ${pm} ${pi} ${pw} ${a}"
 
 resultsDir=Results
 rm -rf ${resultsDir}
