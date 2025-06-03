@@ -97,9 +97,10 @@ void evaluate_pop (population *pop)
 
 void evaluate_ind(individual *ind)
 {
+    ind->constr_violation = 0.0;
     double total_distance = 0.0;
     double total_emissions = 0.0;
-    double constr_viol = 0.0;
+/*     double constr_viol = 0.0; */
 
     int current_vehicle = 0;
     int current_capacity = 0;
