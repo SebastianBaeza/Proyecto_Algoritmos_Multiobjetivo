@@ -22,7 +22,8 @@ resultsDir=Results
 rm -rf ${resultsDir}
 mkdir ${resultsDir}
 
-dirhv="../hv-1.3-src"
+dirhv="hv-1.3-src"
+# dirhv="../hv-1.3-src"
 
 #Lista de semillas
 seedList="129 137 2356 402 195 6666 429 762 887 843 999 7896 332 34966 287 2226 4636 555 58016 57396"

@@ -372,6 +372,7 @@ int main (int argc, char **argv)
 /*     printf("\n Generations finished, now reporting solutions"); */
     report_pop(parent_pop,fpt2);
     report_feasible(parent_pop,fpt3);
+    report_quality(parent_pop, "quality.out");
     if (nreal!=0)
     {
         fprintf(fpt5,"\n Number of crossover of real variable = %d",nrealcross);

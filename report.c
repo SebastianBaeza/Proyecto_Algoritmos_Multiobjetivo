@@ -111,3 +111,24 @@ void report_feasible (population *pop, FILE *fpt)
     }
     return;
 }
+
+void report_quality(population *pop, const char *filename)
+{
+    FILE *fpt = fopen(filename, "w");
+    int i, j;
+    if (!fpt) return;
+    for (i = 0; i < popsize; i++)
+    {
+        /* if (pop->ind[i].constr_violation == 0.0 && pop->ind[i].rank == 1) */
+        if (pop->ind[i].constr_violation == 0.0)
+        {
+            for (j = 0; j < nobj; j++)
+            {
+                fprintf(fpt, "%.6f", pop->ind[i].obj[j]);
+                if (j < nobj - 1) fprintf(fpt, " ");
+            }
+            fprintf(fpt, "\n");
+        }
+    }
+    fclose(fpt);
+}

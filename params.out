@@ -4,6 +4,6 @@
  Number of generations = 100
  Number of objective functions = 2
  Number of constraints = 3
- Seed for random number generator = 5.330000e-01
- Number of crossover of real variable = 3016
- Number of mutation of real variable = 977
+ Seed for random number generator = 5.739600e-01
+ Number of crossover of real variable = 2900
+ Number of mutation of real variable = 985

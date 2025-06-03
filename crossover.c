@@ -48,7 +48,7 @@ void crossover (individual *parent1, individual *parent2, individual *child1, in
 /* Routine for real variable SBX crossover */
 void realcross (individual *parent1, individual *parent2, individual *child1, individual *child2)
 {
-    printf("\n--- Performing Sinusoidal Motion crossover ---\n");
+/*     printf("\n--- Performing Sinusoidal Motion crossover ---\n"); */
     int i, j;
     individual *parent1_n;
     individual *parent2_n;
@@ -86,7 +86,7 @@ void realcross (individual *parent1, individual *parent2, individual *child1, in
         child2_n->route_length = 0;
 
 /*         // Copia rutas de los padres a los temporales */
-        printf("Parent1 route: ");
+/*         printf("Parent1 route: ");
         for (i = 0; i < parent1->route_length; i++) {
             printf("%d ", parent1->route[i]);
         }
@@ -97,7 +97,7 @@ void realcross (individual *parent1, individual *parent2, individual *child1, in
         printf("\n");
         printf("parent1->route_length: %d, parent2->route_length: %d\n", parent1->route_length, parent2->route_length);
         printf("\n");
-
+ */
         for (i = 0; i < n_customers; i++) {
             if (parent1->route[internal_counter1] > 0) {
                 parent1_n->route[i] = parent1->route[internal_counter1];
@@ -287,7 +287,7 @@ void realcross (individual *parent1, individual *parent2, individual *child1, in
         for (i = 0; i < parent2->route_length; i++)
         child2->route[i] = parent2->route[i];
     }
-    printf("Final child1 route: ");
+/*     printf("Final child1 route: ");
     for (i=0;i < child1->route_length; i++)
     {
         printf("%d ", child1->route[i]);
@@ -300,7 +300,7 @@ void realcross (individual *parent1, individual *parent2, individual *child1, in
         printf("%d ", child2->route[i]);
     }
     printf("\nChild 2 route length: %d\n", child2->route_length);
-    printf("--- Sinusoidal Motion crossover completed ---\n");
+    printf("--- Sinusoidal Motion crossover completed ---\n"); */
     return;
 }
 /* Routine for real variable SBX crossover */
